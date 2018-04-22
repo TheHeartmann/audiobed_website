@@ -1,5 +1,5 @@
-Audio bed website project
-=========================
+Audiobed website project
+========================
 
 The goal of this project is to create a simple static website for the purposes of learning and gaining experience with Rust (server), Elm (front-end), and, to a lesser degree, CSS (in particular: CSS grid).
 
@@ -8,23 +8,32 @@ Furthermore, in the interest of gaining more experience with deployment and inte
 Roadmap
 -------
 
-### <span class="todo TODO">TODO</span> Create repo
+### <span class="done DONE">DONE</span> Create repo
+
+CLOSED: \[2018-04-22 Sun 20:44\]
 
 -   \[X\] Git init
 -   \[X\] Add readme
 -   \[X\] Add .gitignore
--   \[ \] Configure commit hooks
--   \[ \] Push to remote
--   \[ \] Invite collaborators
+-   \[X\] Configure commit hooks
+-   \[X\] Set up remote
+-   \[X\] Invite collaborators
 
-### Git commit hooks?
+### <span class="todo TODO">TODO</span> Git commit hooks? \[1/2\] \[50%\]
 
-### <span class="todo TODO">TODO</span> Set up Travis build process \[0/2\] \[0%\]
+-   \[X\] Automatic md export of \`README.org\` to \`README.md\`
+-   \[ \] Formatting source code \[0/5\] \[0%\]
+    -   \[ \] CSS
+    -   \[ \] Elm
+    -   \[ \] HTML?
+    -   \[ \] JS (Standard)
+    -   \[ \] Rust
+
+### <span class="todo TODO">TODO</span> Set up Travis build process \[0/3\] \[0%\]
 
 -   \[ \] Set up automatic compilation of Elm to html
--   \[ \] Automatic md export of \`README.org\` to \`README.md\`
 -   \[ \] Set up file renaming on push \[0/2\] \[0%\]
-    -   \[ \] Write python script to do this
+    -   \[ \] Write script to do this
     -   \[ \] test said script
     -   To avoid caching issues, every time a JS, CSS, HTML file is updated, its name should change. This way, a browser will never request a stale version of a certain file.
     -   Suggestion: each file should have appended to the name the commit hash for the last change to the file (e.g. \`main-8fe642ed.html\`)
