@@ -1,2 +1,8 @@
 [core]
 	hooksPath = .git_hooks
+
+[pull]
+  rebase = preserve
+
+[fetch]
+  prune = true
