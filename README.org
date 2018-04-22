@@ -12,6 +12,7 @@
     - [X] Configure commit hooks
     - [X] Set up remote
     - [X] Invite collaborators
+	- [X] Collaborators confirm invite
 *** TODO Git commit hooks? [1/2] [50%]
     - [X] Automatic md export of `README.org` to `README.md`
     - [ ] Formatting source code [0/5] [0%]
