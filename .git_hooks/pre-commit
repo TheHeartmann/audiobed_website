@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+
+import os
+
+README_ORG = 'README.org'
+README_MD = 'README.md'
+
+
+def get_changed_files():
+    return os.popen('git diff --cached --name-only --diff-filter=ACM') \
+        .read().strip().split('\n')
+
+
+def is_tracked(path):
+    return os.system('git ls-files --error-unmatch {}'.format(path)) == 0
+
+
+def add(path):
+    if not is_tracked(path):
+        print('New file: {}. Adding to git.'.format(path))
+    print('Adding {} to commit.'.format(path))
+    os.system('git add {}'.format(path))
+
+
+def update_readme(source, target):
+    # create markdown version of README. Add to commit.
+    print('{} changed. Generating {}'.format(source, target))
+    exit_code = os.system(
+        'pandoc -t markdown_github -f org -o README.md README.org')
+    if exit_code != 0:  # something went wrong. abort commit.
+        raise Exception(
+            '''The pandoc conversion from org mode to markdown failed.
+            Aborting commit. Use `--no-verify` to override.''')
+    add(target)
+
+
+def main():
+    changed_files = get_changed_files()
+    if README_ORG in changed_files:
+        update_readme(README_ORG, README_MD)
+
+
+
+if __name__ == "__main__":
+    main()
