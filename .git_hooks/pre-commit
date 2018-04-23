@@ -26,7 +26,7 @@ def update_readme(source, target):
     # create markdown version of README. Add to commit.
     print('{} changed. Generating {}'.format(source, target))
     exit_code = os.system(
-        'pandoc -t markdown_github -f org -o README.md README.org')
+        'pandoc -t gfm -f org -o README.md README.org')
     if exit_code != 0:  # something went wrong. abort commit.
         raise Exception(
             '''The pandoc conversion from org mode to markdown failed.
