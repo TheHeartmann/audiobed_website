@@ -1,5 +1,5 @@
 """
-A simple script to initialise the local repo properly.
+A simple script to initialize the local repo properly.
 """
 import os
 import shutil
@@ -17,17 +17,19 @@ def copy_hooks():
     git versions < 2.9.0
     '''
     source_dir = '.git_hooks'
-    target_dir = '.git/hooks'
+    target_dir = os.path.join('.git', 'hooks')
     for base, _, files in os.walk(source_dir):
         for f in files:
             shutil.copy2(os.path.join(base, f), os.path.join(target_dir, f))
-    print("Copied the following hooks to {}: {}".format(target_dir, ', '.join(files)))
+    print("Copied the following hooks to {}:\n\t{}".format(
+        target_dir, '\n\t'.join(files)))
 
 
 def main():
-    print("Initiating repo.")
+    print("Initializing repo.")
     init_gitconfig()
     copy_hooks()
+    print("Initial repo configuration complete.")
 
 
 if __name__ == '__main__':
