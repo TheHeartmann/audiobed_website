@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
 import os
+import re
+import sys
 
-README_ORG = 'README.org'
-README_MD = 'README.md'
+from file_definitions import REQUIRES_PANDOC, README_ORG, README_MD
 
 
 def get_changed_files():
@@ -15,30 +16,62 @@ def is_tracked(path):
     return os.system('git ls-files --error-unmatch {}'.format(path)) == 0
 
 
-def add(path):
+def add_to_commit(path):
     if not is_tracked(path):
         print('New file: {}. Adding to git.'.format(path))
-    print('Adding {} to commit.'.format(path))
+    print('Adding {} to previous commit.'.format(path))
     os.system('git add {}'.format(path))
+
+
+def get_pandoc_major_version():
+    pandoc_version_string = os.popen('pandoc -v').readline()
+    return int(re.search(r'^pandoc (\d)', pandoc_version_string).group(1))
+
+
+def verify_pandoc():
+    '''
+    Returns True if the user has pandoc installed.
+    '''
+    return os.popen('pandoc -v').readline() != ''
+
+
+def verify(changed_files):
+    '''Verify changed files. Raises an exception if something is not right.'''
+    if len(set(changed_files) & set(REQUIRES_PANDOC)) and not verify_pandoc():
+        raise Exception(
+            '''You cannot commit changes to the following files without pandoc:
+            {}
+
+            Commit aborted.'''.format('\n\t'.join(REQUIRES_PANDOC)))
 
 
 def update_readme(source, target):
     # create markdown version of README. Add to commit.
     print('{} changed. Generating {}'.format(source, target))
+    markdown_format = 'gfm' if get_pandoc_major_version() >= 2 \
+        else 'markdown_github'
+
     exit_code = os.system(
-        'pandoc -t gfm -f org -o README.md README.org')
+        'pandoc -t {} -f org -o README.md README.org'.format(markdown_format))
     if exit_code != 0:  # something went wrong. abort commit.
         raise Exception(
             '''The pandoc conversion from org mode to markdown failed.
             Aborting commit. Use `--no-verify` to override.''')
-    add(target)
+    add_to_commit(target)
 
 
 def main():
+    print('Performing pre-commit validation.')
     changed_files = get_changed_files()
-    if README_ORG in changed_files:
-        update_readme(README_ORG, README_MD)
-
+    try:
+        verify(changed_files)
+        if README_ORG in changed_files:
+            update_readme(README_ORG, README_MD)
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+    else:
+        print('Successfully passed pre-commit validation.')
 
 
 if __name__ == "__main__":
