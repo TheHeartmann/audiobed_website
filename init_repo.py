@@ -1,3 +1,4 @@
+#!usr/bin/env python
 """
 A simple script to initialize the local repo properly.
 """
@@ -48,7 +49,7 @@ def check_pandoc():
         https://github.com/jgm/pandoc/releases''')
         return False
 
-    if int(re.search(r'^pandoc (\d)', pandoc_version_string).group(1)) >= 2:
+    if int(re.search(r'^pandoc[\w \.]+?(\d)+\.', pandoc_version_string).group(1)) >= 2:
         log('''\tPandoc installation approved.''')
     else:
         log('''\tYour Pandoc installation is outdated.
