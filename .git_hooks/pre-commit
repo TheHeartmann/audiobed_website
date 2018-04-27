@@ -4,7 +4,7 @@ import os
 import re
 import sys
 
-from file_definitions import REQUIRES_PANDOC, README_ORG, README_MD
+from file_definitions import REQUIRES_PANDOC, README_ORG, README_MD, NO_EXT_PYTHON_FILES
 
 
 def get_changed_files():
@@ -60,25 +60,31 @@ def update_readme(source, target):
     add_to_commit(target)
 
 
-def format(format_cmd, file, *flags):
+def format(format_cmd, files, *flags):
     '''
     Attempts to format code. Returns True if successful.
     Raises an exception if something goes wrong.
     '''
-    return_code = os.system('{} {} {}'.format(format_cmd, file, ' '.join(flags)))
+    if not files:
+        return True
+
+    file_string = ' '.join(files)
+
+    return_code = os.system('{} {} {}'.format(format_cmd, file_string,
+                                              ' '.join(flags)))
     if return_code > 0:  # we encountered an error
         raise Exception('''
         There was an error in formatting the committed code for {}.
-        The process exited with code {}'''.format(file, return_code))
-    print("Successfully formatted {}".format(file))
+        The process exited with code {}'''.format(file_string, return_code))
+    print("Successfully formatted {}".format(file_string))
     return True
 
 
-def elm_format(file):
-    return format('elm-format', file, '--yes')
+def elm_format(files):
+    return format('elm-format', files, '--yes')
 
 
-def rustfmt(file):
+def rustfmt(files):
     '''
     If rustfmt successfully reformatted the code it will exit with 0 exit
     status. Exit status 1 signals some unexpected error, like an unknown option
@@ -88,25 +94,33 @@ def rustfmt(file):
     resolved automatically. For example, if you have a very long comment line
     rustfmt doesn't split it. Instead it prints a warning and exits with 3.
     '''
-    return format('rustfmt', file)
+    return format('rustfmt', files)
 
+
+def get_files(files, ext):
+    return [x for x in files if re.search(r'\w+\.{}$'.format(ext), x)]
+
+
+def yapf(files):
+    return format('yapf', files, '-i', '--style pep8')
 
 
 def main(changed_files):
     verify(changed_files)
+
     if README_ORG in changed_files:
         update_readme(README_ORG, README_MD)
 
+    def get_committed_files(ext):
+        return get_files(changed_files, ext)
 
-    def get_files(extension):
-        return [x for x in changed_files if re.search(r'\w+\.{}$'.format(extension), x)]
+    elm_format(get_committed_files('elm'))
 
-    for f in get_files('elm'):
-        elm_format(f)
+    rustfmt(get_committed_files('rs'))
 
-    for f in get_files('rs'):
-        rustfmt(f)
-
+    python_files = get_committed_files('py') \
+        + [x for x in changed_files if x.rsplit(os.path.sep)[-1] in NO_EXT_PYTHON_FILES]
+    yapf(python_files)
 
 
 if __name__ == "__main__":
