@@ -5,6 +5,7 @@ import re
 import sys
 
 from file_definitions import REQUIRES_PANDOC, README_ORG, README_MD, NO_EXT_PYTHON_FILES
+from misc import start_hook, end_hook
 
 
 def get_changed_files():
@@ -124,9 +125,7 @@ def main(changed_files):
 
 
 if __name__ == "__main__":
-    print('=' * 50)
-    print('')
-    print('Performing pre-commit validation.')
+    start_hook('Performing pre-commit validation.')
     changed_files = get_changed_files()
     try:
         main(changed_files)
@@ -134,6 +133,4 @@ if __name__ == "__main__":
         print(e)
         sys.exit(1)
     else:
-        print('Successfully passed pre-commit validation.')
-        print('')
-        print('=' * 50)
+        end_hook('Successfully passed pre-commit validation.')

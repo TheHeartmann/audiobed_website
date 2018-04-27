@@ -5,6 +5,7 @@ import re
 import sys
 
 from file_definitions import README_MD
+from misc import start_hook, end_hook
 
 
 def get_changed_files():
@@ -24,9 +25,7 @@ def main(changed_files):
 
 
 if __name__ == "__main__":
-    print('=' * 50)
-    print('')
-    print('Performing post-commit tasks.')
+    start_hook('Performing post-commit tasks.')
     changed_files = get_changed_files()
     try:
         main(changed_files)
@@ -34,6 +33,4 @@ if __name__ == "__main__":
         print(e)
         sys.exit(1)
     else:
-        print('Finished post commit tasks.')
-        print('')
-        print('=' * 50)
+        end_hook('Finished post commit tasks.')
