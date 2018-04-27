@@ -26,13 +26,14 @@ invite
 ### <span class="todo TODO">TODO</span> Git commit hooks? \[1/2\] \[50%\]
 
   - \[X\] Automatic md export of \`README.org\` to \`README.md\`
-  - \[-\] Formatting source code \[2/5\] \[40%\]
+  - \[-\] Formatting source code \[2/6\] \[33%\]
       - \[ \] CSS?
       - \[X\] Elm
       - \[ \] HTML?
       - \[ \] JS (Standard)?
-      - \[X\]
-Rust
+      - \[X\] Rust
+      - \[ \] Python
+(YAPF)
 
 ### <span class="todo TODO">TODO</span> Decide on build process \[0/1\] \[0%\]
 
