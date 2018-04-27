@@ -17,11 +17,11 @@ def is_tracked(path):
     return os.system('git ls-files --error-unmatch {}'.format(path)) == 0
 
 
-def add_to_commit(path):
-    if not is_tracked(path):
-        print('New file: {}. Adding to git.'.format(path))
-    print('Adding {} to previous commit.'.format(path))
-    os.system('git add {}'.format(path))
+def add_to_commit(file_string):
+    if not is_tracked(file_string):
+        print('New file: {}. Adding to git.'.format(file_string))
+    print('Adding {} to commit.'.format(file_string))
+    os.system('git add {}'.format(file_string))
 
 
 def get_pandoc_major_version():
@@ -78,6 +78,7 @@ def format(format_cmd, files, *flags):
         There was an error in formatting the committed code for {}.
         The process exited with code {}'''.format(file_string, return_code))
     print("Successfully formatted {}".format(file_string))
+    add_to_commit(file_string)
     return True
 
 
