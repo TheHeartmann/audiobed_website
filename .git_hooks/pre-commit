@@ -60,19 +60,62 @@ def update_readme(source, target):
     add_to_commit(target)
 
 
-def main():
+def format(format_cmd, file, *flags):
+    '''
+    Attempts to format code. Returns True if successful.
+    Raises an exception if something goes wrong.
+    '''
+    return_code = os.system('{} {} {}'.format(format_cmd, file, ' '.join(flags)))
+    if return_code > 0:  # we encountered an error
+        raise Exception('''
+        There was an error in formatting the committed code for {}.
+        The process exited with code {}'''.format(file, return_code))
+    print("Successfully formatted {}".format(file))
+    return True
+
+
+def elm_format(file):
+    return format('elm-format', file, '--yes')
+
+
+def rustfmt(file):
+    '''
+    If rustfmt successfully reformatted the code it will exit with 0 exit
+    status. Exit status 1 signals some unexpected error, like an unknown option
+    or a failure to read a file. Exit status 2 is returned if there are syntax
+    errors in the input files. rustfmt can't format syntactically invalid code.
+    Finally, exit status 3 is returned if there are some issues which can't be
+    resolved automatically. For example, if you have a very long comment line
+    rustfmt doesn't split it. Instead it prints a warning and exits with 3.
+    '''
+    return format('rustfmt', file)
+
+
+
+def main(changed_files):
+    verify(changed_files)
+    if README_ORG in changed_files:
+        update_readme(README_ORG, README_MD)
+
+
+    def get_files(extension):
+        return [x for x in changed_files if re.search(r'\w+\.{}$'.format(extension), x)]
+
+    for f in get_files('elm'):
+        elm_format(f)
+
+    for f in get_files('rs'):
+        rustfmt(f)
+
+
+
+if __name__ == "__main__":
     print('Performing pre-commit validation.')
     changed_files = get_changed_files()
     try:
-        verify(changed_files)
-        if README_ORG in changed_files:
-            update_readme(README_ORG, README_MD)
+        main(changed_files)
     except Exception as e:
         print(e)
         sys.exit(1)
     else:
         print('Successfully passed pre-commit validation.')
-
-
-if __name__ == "__main__":
-    main()

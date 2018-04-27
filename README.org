@@ -15,12 +15,24 @@
 	- [X] Collaborators confirm invite
 *** TODO Git commit hooks? [1/2] [50%]
     - [X] Automatic md export of `README.org` to `README.md`
-    - [ ] Formatting source code [0/5] [0%]
-      - [ ] CSS
-      - [ ] Elm
+    - [-] Formatting source code [2/5] [40%]
+      - [ ] CSS?
+      - [X] Elm
       - [ ] HTML?
-      - [ ] JS (Standard)
-      - [ ] Rust
+      - [ ] JS (Standard)?
+      - [X] Rust
+*** TODO Decide on build process [0/1] [0%]
+    Should the markup on the site be completely in elm, or should as much as possible be static HTML?
+    If the latter, how do we want to do that? Pure HTML? Rust templating?
+    - [ ] Decide what to do about HTML
+      - Use straight HTML?
+      - Use pure elm?
+      - Use Rust templates
+        - Alternatives include:
+          - *Maud* (this seems promising and is remarkably similar to elm's HTML module)
+          - Horrorshow
+          - Tera
+          - Handlebars
 *** TODO Set up Travis build process [0/3] [0%]
     - [ ] Set up automatic compilation of Elm to html
     - [ ] Set up file renaming on push [0/2] [0%]
