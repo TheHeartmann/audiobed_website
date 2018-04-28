@@ -1,4 +1,5 @@
 #!usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 A simple script to initialize the local repo properly.
 """
@@ -7,8 +8,8 @@ import re
 import shutil
 
 
-def log(message):
-    print('{}\n'.format(message))
+def log(message, indent=''):
+    print('{}{}\n'.format(indent, message))
 
 
 def init_gitconfig():
@@ -25,11 +26,22 @@ def copy_hooks():
     '''
     source_dir = '.git_hooks'
     target_dir = os.path.join('.git', 'hooks')
-    for base, _, files in os.walk(source_dir):
-        for f in files:
-            shutil.copy2(os.path.join(base, f), os.path.join(target_dir, f))
-    log("Copied the following hooks to {}:\n\t{}".format(
-        target_dir, '\n\t'.join(files)))
+    files_to_copy = [
+        x for x in os.listdir(source_dir)
+        if os.path.isfile(os.path.join(source_dir, x))
+    ]
+
+    if not files_to_copy:
+        log('No hooks to copy.')
+        return
+
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+        log('Created target directory {}'.format(target_dir))
+    for f in files_to_copy:
+        shutil.copy2(os.path.join(source_dir, f), os.path.join(target_dir, f))
+    log('Copied the following hooks to {}:\n\t{}'.format(
+        target_dir, '\n\t'.join(files_to_copy)))
 
 
 def check_pandoc():
@@ -49,7 +61,9 @@ def check_pandoc():
         https://github.com/jgm/pandoc/releases''')
         return False
 
-    if int(re.search(r'^pandoc[\w \.]+?(\d)+\.', pandoc_version_string).group(1)) >= 2:
+    if int(
+            re.search(r'^pandoc[\w \.]+?(\d)+\.',
+                      pandoc_version_string).group(1)) >= 2:
         log('''\tPandoc installation approved.''')
     else:
         log('''\tYour Pandoc installation is outdated.
@@ -58,11 +72,30 @@ def check_pandoc():
         return True
 
 
+def check_yapf():
+    '''
+    Check whether the user has YAPF installed or not.
+    If not, try to install it.
+    '''
+    print('YAPF:')
+    if os.popen('yapf -v').readline():
+        log('YAPF installed: ✓', '\t')
+        return True
+
+    log('YAPF formatter was not found. Installing.', '\t')
+    if os.system('pip install yapf'):
+        log('Successfully installed YAPF', '\t')
+        return True
+    log('The YAPF installation failed. Please install it manually.', '\t')
+    return False
+
+
 def main():
     log("Initializing repo.")
     init_gitconfig()
     copy_hooks()
     check_pandoc()
+    check_yapf()
     log("Initial repo configuration complete.")
 
 
