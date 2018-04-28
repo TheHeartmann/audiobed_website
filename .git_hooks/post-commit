@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+
+import os
+import re
+import sys
+
+from file_definitions import README_MD
+from misc import start_hook, end_hook, print_message
+
+
+def get_changed_files():
+    return os.popen('git diff-tree --no-commit-id --name-only -r HEAD') \
+        .read().strip().split('\n')
+
+
+def reset(path, revision='HEAD'):
+    os.system('git reset {} {}'.format(path, revision))
+
+
+def main(changed_files):
+    print_message("Committed files:\n\t{}".format('\n\t'.join(changed_files)))
+
+    reset(' '.join(changed_files), 'HEAD')
+
+
+if __name__ == "__main__":
+    start_hook('Performing post-commit tasks.')
+    changed_files = get_changed_files()
+    try:
+        main(changed_files)
+    except Exception as e:
+        print_message(e)
+        sys.exit(1)
+    else:
+        end_hook('Finished post commit tasks.')

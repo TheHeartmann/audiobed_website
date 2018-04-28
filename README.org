@@ -15,12 +15,15 @@
 	- [X] Collaborators confirm invite
 *** TODO Git commit hooks? [1/2] [50%]
     - [X] Automatic md export of `README.org` to `README.md`
-    - [-] Formatting source code [2/5] [40%]
+    - [-] Formatting source code [2/6] [33%]
       - [ ] CSS?
       - [X] Elm
       - [ ] HTML?
       - [ ] JS (Standard)?
       - [X] Rust
+      - [-] Python (YAPF)
+        - [X] Format
+        - [ ] Make sure YAPF is installed or fail gracefully.
 *** TODO Decide on build process [0/1] [0%]
     Should the markup on the site be completely in elm, or should as much as possible be static HTML?
     If the latter, how do we want to do that? Pure HTML? Rust templating?
