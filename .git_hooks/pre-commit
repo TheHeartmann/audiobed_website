@@ -14,7 +14,8 @@ def get_changed_files():
 
 
 def is_tracked(path):
-    return os.system('git ls-files --error-unmatch {}'.format(path)) == 0
+    return os.popen('git ls-files --error-unmatch {}'.format(
+        path)).readline().strip() == path
 
 
 def add_to_commit(file_string):
@@ -131,7 +132,7 @@ if __name__ == "__main__":
     try:
         main(changed_files)
     except Exception as e:
-        print_message(e)
+        end_hook(e)
         sys.exit(1)
     else:
         end_hook('Successfully passed pre-commit validation.')
