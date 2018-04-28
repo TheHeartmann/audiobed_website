@@ -36,20 +36,38 @@
           - Horrorshow
           - Tera
           - Handlebars
-*** TODO Set up Travis build process [0/3] [0%]
-    - [ ] Set up automatic compilation of Elm to html
+*** TODO Set up Travis build process [2/4] [50%]
+    - [X] Init travis
+    - [X] Set up heroku api key
+    +- [ ] Set up automatic compilation of Elm to html+
     - [ ] Set up file renaming on push [0/2] [0%]
       - [ ] Write script to do this
       - [ ] test said script
       - To avoid caching issues, every time a JS, CSS, HTML file is updated, its name should change. This way, a browser will never request a stale version of a certain file.
       - Suggestion: each file should have appended to the name the commit hash for the last change to the file (e.g. `main-8fe642ed.html`)
       - Alternatively, if the above gets too difficult, it's also possible to use the hash of the commit that triggered the publish
-      - Solution: make the build system rename relevant files in place and change all references to the files before building
+      - Solution: make the build system rename relevant files in place and change all references to the files before building?
     - [ ] Set up testing
-*** TODO Set up Heroku integration [0/2] [0%]
-    - [ ] Set up automatic publish on push to master
-    - [ ] Set up multiple versions of the site for multiple branches [0/3] [0%]
-      - [ ] master
-      - [ ] dev
+*** TODO Set up Heroku integration [1/3] [33%]
+    - [X] Set up automatic publish on push to master
+    - [-] Configure buildpacks
+      - [-] [[https://github.com/emk/heroku-buildpack-rust][Rust]]
+        - [X] Follow github guide
+        - [X] Follow [[http://www.duelinmarkers.com/2017/10/21/how-to-deploy-a-rocket-application-to-heroku.html][this guide]]
+          - Haven't set base_url or ROCKET_ENV
+        - [ ] Test
+      - [-] [[https://github.com/srid/heroku-buildpack-elm][Elm]]
+        - [X] Main Elm
+        - [ ] Might need static?
+        - [ ] Test
+    - [-] Set up multiple versions of the site for multiple branches [2/3] [66%]
+      - [X] master: production
+      - [X] dev: dev
       - [ ] create an easy system to add new branches
         - This can either be a simple set of instructions, an automatic process, *or* a script that takes care of it
+        - Necessary steps:
+          - [ ] heroku create audiobed-{branch} --remote {branch || remote}
+          - [ ] Add to travis.yml:
+            app:
+                ...
+                {branch}: audiobed-{branch}

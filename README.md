@@ -55,9 +55,13 @@ module)
               - Tera
               - Handlebars
 
-### <span class="todo TODO">TODO</span> Set up Travis build process \[0/3\] \[0%\]
+### <span class="todo TODO">TODO</span> Set up Travis build process \[2/4\] \[50%\]
 
-  - \[ \] Set up automatic compilation of Elm to html
+  - \[X\] Init travis
+  - \[X\] Set up heroku api key
+
+~~- \[ \] Set up automatic compilation of Elm to html~~
+
   - \[ \] Set up file renaming on push \[0/2\] \[0%\]
       - \[ \] Write script to do this
       - \[ \] test said script
@@ -71,17 +75,33 @@ module)
         possible to use the hash of the commit that triggered the
         publish
       - Solution: make the build system rename relevant files in place
-        and change all references to the files before building
+        and change all references to the files before building?
   - \[ \] Set up
 testing
 
-### <span class="todo TODO">TODO</span> Set up Heroku integration \[0/2\] \[0%\]
+### <span class="todo TODO">TODO</span> Set up Heroku integration \[1/3\] \[33%\]
 
-  - \[ \] Set up automatic publish on push to master
-  - \[ \] Set up multiple versions of the site for multiple branches
-    \[0/3\] \[0%\]
-      - \[ \] master
-      - \[ \] dev
+  - \[X\] Set up automatic publish on push to master
+  - \[-\] Configure buildpacks
+      - \[-\] [Rust](https://github.com/emk/heroku-buildpack-rust)
+          - \[X\] Follow github guide
+          - \[X\] Follow [this
+            guide](http://www.duelinmarkers.com/2017/10/21/how-to-deploy-a-rocket-application-to-heroku.html)
+              - Haven't set base<sub>url</sub> or ROCKET<sub>ENV</sub>
+          - \[ \] Test
+      - \[-\] [Elm](https://github.com/srid/heroku-buildpack-elm)
+          - \[X\] Main Elm
+          - \[ \] Might need static?
+          - \[ \] Test
+  - \[-\] Set up multiple versions of the site for multiple branches
+    \[2/3\] \[66%\]
+      - \[X\] master: production
+      - \[X\] dev: dev
       - \[ \] create an easy system to add new branches
           - This can either be a simple set of instructions, an
             automatic process, **or** a script that takes care of it
+          - Necessary steps:
+              - \[ \] heroku create audiobed-{branch} –remote {branch ||
+                remote}
+              - \[ \] Add to travis.yml: app: … {branch}:
+                audiobed-{branch}
