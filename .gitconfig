@@ -6,3 +6,7 @@
 
 [fetch]
   prune = true
+
+[rerere]
+	enabled = true
+	autoupdate = true
