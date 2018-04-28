@@ -5,7 +5,7 @@ import re
 import sys
 
 from file_definitions import README_MD
-from misc import start_hook, end_hook
+from misc import start_hook, end_hook, print_message
 
 
 def get_changed_files():
@@ -18,8 +18,7 @@ def reset(path, revision='HEAD'):
 
 
 def main(changed_files):
-    print("The following files are included in the commit:\n\t{}".format(
-        '\n\t'.join(changed_files)))
+    print_message("Committed files:\n\t{}".format('\n\t'.join(changed_files)))
 
     reset(' '.join(changed_files), 'HEAD')
 
@@ -30,7 +29,7 @@ if __name__ == "__main__":
     try:
         main(changed_files)
     except Exception as e:
-        print(e)
+        print_message(e)
         sys.exit(1)
     else:
         end_hook('Finished post commit tasks.')

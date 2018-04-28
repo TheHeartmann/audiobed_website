@@ -6,8 +6,12 @@ SEPARATOR = '=' * 60
 
 
 def start_hook(message):
-    print('{}\n\n{}'.format(SEPARATOR, message))
+    print_message('{}\n\n{}'.format(SEPARATOR, message))
 
 
 def end_hook(message):
-    print('{}\n\n{}'.format(message, SEPARATOR))
+    print_message('{}\n\n{}'.format(message, SEPARATOR))
+
+
+def print_message(message):
+    print('{}\n'.format(message))
