@@ -21,7 +21,7 @@ def main(changed_files):
     print("The following files are included in the commit:\n\t{}".format(
         '\n\t'.join(changed_files)))
 
-    reset(README_MD, 'HEAD')
+    reset(' '.join(changed_files), 'HEAD')
 
 
 if __name__ == "__main__":
