@@ -26,16 +26,16 @@ invite
 ### <span class="todo TODO">TODO</span> Git commit hooks? \[1/2\] \[50%\]
 
   - \[X\] Automatic md export of \`README.org\` to \`README.md\`
-  - \[-\] Formatting source code \[2/6\] \[33%\]
+  - \[-\] Formatting source code \[3/6\] \[50%\]
       - \[ \] CSS?
       - \[X\] Elm
       - \[ \] HTML?
       - \[ \] JS (Standard)?
       - \[X\] Rust
-      - \[-\] Python (YAPF)
+      - \[X\] Python (YAPF)
           - \[X\] Format
-          - \[ \] Make sure YAPF is installed or fail
-gracefully.
+          - \[X\] Make sure YAPF is installed (gets installed in
+            init<sub>repo</sub>)
 
 ### <span class="todo TODO">TODO</span> Decide on build process \[0/1\] \[0%\]
 
