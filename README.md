@@ -55,6 +55,15 @@ module)
               - Tera
               - Handlebars
 
+### <span class="done DONE">DONE</span> Decide on initial architecture and structure of app
+
+CLOSED: \[2018-04-29 Sun 16:09\]
+
+~~- Should rust/server stuff be separated?~~
+
+~~- Suggestion: /server/src
+/content~~
+
 ### <span class="todo TODO">TODO</span> Set up Travis build process \[2/4\] \[50%\]
 
   - \[X\] Init travis
@@ -105,3 +114,14 @@ testing
                 remote}
               - \[ \] Add to travis.yml: app: … {branch}:
                 audiobed-{branch}
+
+### Administrative tasks \[0/2\] \[0%\]
+
+  - \[ \] Remove .vscode from git
+      - \[ \] delete
+      - \[ \] git rm -rf –cached
+      - \[ \] remove exclusion in .gitignore
+  - \[ \] Remove readme markdown
+      - \[ \] delete
+      - \[ \] git rm -rf –cached
+      - \[ \] remove pandoc doc generation
