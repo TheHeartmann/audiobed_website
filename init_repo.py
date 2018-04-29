@@ -26,9 +26,11 @@ def copy_hooks():
     '''
     source_dir = '.git_hooks'
     target_dir = os.path.join('.git', 'hooks')
+    ignored_files = re.compile(r'^.+\.pyc$')
     files_to_copy = [
         x for x in os.listdir(source_dir)
-        if os.path.isfile(os.path.join(source_dir, x))
+        if (os.path.isfile(os.path.join(source_dir, x))
+            and not ignored_files.match(x))
     ]
 
     if not files_to_copy:
