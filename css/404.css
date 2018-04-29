@@ -17,9 +17,18 @@ h2 {
 }
 
 a {
+    text-decoration: none;
+    color: #000;
     font-size: 10vmin;
 }
 
+a:hover {
+    background: radial-gradient(circle at bottom center, #FFC83700 5vmin, #FF800800);
+}
+
+a:active {
+    background: radial-gradient(circle at bottom center, #545454 5vmin, #3c3c3c);
+}
 
 .grid {
     display: grid;
@@ -37,7 +46,7 @@ a {
 }
 
 .jumbo {
-    grid-template-rows:repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
     overflow-y: scroll;
 }
 
@@ -48,9 +57,4 @@ a {
     place-items: center;
     background: radial-gradient(circle at bottom center, #FFC837 5vmin, #FF8008);
     box-shadow: 0 3vmin 3vmin -1.5vmin rgba(0, 0, 0, 0.2);
-}
-
-.link {
-    text-decoration: none;
-    color: #000;
 }
