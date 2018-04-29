@@ -9,3 +9,4 @@ deploy:
   app:
     master: audiobed
     dev: audiobed-dev
+    integrations: audiobed-sandbox
