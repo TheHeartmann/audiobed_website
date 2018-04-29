@@ -75,7 +75,7 @@
             app:
                 ...
                 {branch}: audiobed-{branch}
-*** Administrative tasks [2/2] [100%]
+*** Administrative tasks [2/3] [66%]
     - [X] Remove .vscode from git
       - [X] delete
       - [X] git rm -rf --cached
@@ -84,3 +84,4 @@
       - [X] delete
       - [X] git rm -rf --cached
       - [X] remove pandoc doc generation
+    - [ ] Add Clement to cargo.toml
