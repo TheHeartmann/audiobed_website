@@ -1,6 +1,6 @@
 * Audiobed website project
   The goal of this project is to create a simple static website for the purposes of learning and gaining experience with Rust (server), Elm (front-end), and, to a lesser degree, CSS (in particular: CSS grid).
-
+  
   Furthermore, in the interest of gaining more experience with deployment and integration systems, the project will use Travis CI for integration testing and deployment to Heroku.
 
 **  Roadmap
@@ -65,12 +65,12 @@
             app:
                 ...
                 {branch}: audiobed-{branch}
-*** Administrative tasks [0/2] [0%]
-    - [ ] Remove .vscode from git
-      - [ ] delete
-      - [ ] git rm -rf --cached
-      - [ ] remove exclusion in .gitignore
-    - [ ] Remove readme markdown
-      - [ ] delete
-      - [ ] git rm -rf --cached
-      - [ ] remove pandoc doc generation
+*** Administrative tasks [2/2] [100%]
+    - [X] Remove .vscode from git
+      - [X] delete
+      - [X] git rm -rf --cached
+      - [X] remove exclusion in .gitignore
+    - [X] Remove readme markdown
+      - [X] delete
+      - [X] git rm -rf --cached
+      - [X] remove pandoc doc generation
