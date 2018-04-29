@@ -55,9 +55,22 @@ module)
               - Tera
               - Handlebars
 
-### <span class="todo TODO">TODO</span> Set up Travis build process \[0/3\] \[0%\]
+### <span class="done DONE">DONE</span> Decide on initial architecture and structure of app
 
-  - \[ \] Set up automatic compilation of Elm to html
+CLOSED: \[2018-04-29 Sun 16:09\]
+
+~~- Should rust/server stuff be separated?~~
+
+~~- Suggestion: /server/src
+/content~~
+
+### <span class="todo TODO">TODO</span> Set up Travis build process \[2/4\] \[50%\]
+
+  - \[X\] Init travis
+  - \[X\] Set up heroku api key
+
+~~- \[ \] Set up automatic compilation of Elm to html~~
+
   - \[ \] Set up file renaming on push \[0/2\] \[0%\]
       - \[ \] Write script to do this
       - \[ \] test said script
@@ -85,3 +98,19 @@ testing
       - \[ \] create an easy system to add new branches
           - This can either be a simple set of instructions, an
             automatic process, **or** a script that takes care of it
+          - Necessary steps:
+              - \[ \] heroku create audiobed-{branch} –remote {branch ||
+                remote}
+              - \[ \] Add to travis.yml: app: … {branch}:
+                audiobed-{branch}
+
+### Administrative tasks \[0/2\] \[0%\]
+
+  - \[ \] Remove .vscode from git
+      - \[ \] delete
+      - \[ \] git rm -rf –cached
+      - \[ \] remove exclusion in .gitignore
+  - \[ \] Remove readme markdown
+      - \[ \] delete
+      - \[ \] git rm -rf –cached
+      - \[ \] remove pandoc doc generation
