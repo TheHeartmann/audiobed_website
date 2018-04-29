@@ -75,12 +75,12 @@
             app:
                 ...
                 {branch}: audiobed-{branch}
-*** Administrative tasks [0/2] [0%]
-    - [ ] Remove .vscode from git
-      - [ ] delete
-      - [ ] git rm -rf --cached
-      - [ ] remove exclusion in .gitignore
-    - [ ] Remove readme markdown
-      - [ ] delete
-      - [ ] git rm -rf --cached
-      - [ ] remove pandoc doc generation
+*** Administrative tasks [2/2] [100%]
+    - [X] Remove .vscode from git
+      - [X] delete
+      - [X] git rm -rf --cached
+      - [X] remove exclusion in .gitignore
+    - [X] Remove readme markdown
+      - [X] delete
+      - [X] git rm -rf --cached
+      - [X] remove pandoc doc generation

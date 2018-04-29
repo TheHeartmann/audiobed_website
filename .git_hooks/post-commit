@@ -4,7 +4,6 @@ import os
 import re
 import sys
 
-from file_definitions import README_MD
 from misc import start_hook, end_hook, print_message
 
 
