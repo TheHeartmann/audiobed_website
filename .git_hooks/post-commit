@@ -14,7 +14,7 @@ def get_changed_files():
 
 
 def reset(path, revision='HEAD'):
-    os.system('git reset {} {}'.format(path, revision))
+    os.popen('git reset {} {}'.format(path, revision))
 
 
 def main(changed_files):
