@@ -47,7 +47,6 @@ a:active {
 
 .jumbo {
     grid-template-rows: repeat(2, 1fr);
-    overflow-y: scroll;
 }
 
 .tile {
