@@ -71,6 +71,7 @@
         - This can either be a simple set of instructions, an automatic process, *or* a script that takes care of it
         - Necessary steps:
           - [ ] heroku create audiobed-{branch} --remote {branch || remote}
+          - [ ] set buildpacks
           - [ ] Add to travis.yml:
             app:
                 ...
