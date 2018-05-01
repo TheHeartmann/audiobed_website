@@ -1,1 +1,1 @@
-web: ROCKET_PORT=$PORT target/release/audiobed
+web: ROCKET_PORT=$PORT ./target/release/audiobed_website
