@@ -57,7 +57,7 @@
     - [-] Configure buildpacks
       - [-] [[https://github.com/emk/heroku-buildpack-rust][Rust]]
         - [X] Follow github guide
-        - [X] Follow [[http://www.duelinmarkers.com/2017/10/21/how-to-deploy-a-rocket-application-to-heroku.html][this guide]]
+        - [X] Follow [[http://www.duelinmarkers.com/2017/10/21/how-to-deploy-a-rocket-application-to-heroku.html][this guide]] and [[https:github.com/SergioBenitez/Rocket/issues/171][this github issue]]
           - Haven't set base_url or ROCKET_ENV
         - [ ] Test
       - [-] [[https://github.com/srid/heroku-buildpack-elm][Elm]]
