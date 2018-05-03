@@ -40,9 +40,10 @@
     CLOSED: [2018-04-29 Sun 16:09]
     +- Should rust/server stuff be separated?+
     +- Suggestion: /server/src /content+
-*** TODO Set up Travis build process [2/4] [50%]
+*** TODO Set up Travis build process [3/5] [60%]
     - [X] Init travis
     - [X] Set up heroku api key
+    - [X] Set up automatic deploy based on branch
     +- [ ] Set up automatic compilation of Elm to html+
     - [ ] Set up file renaming on push [0/2] [0%]
       - [ ] Write script to do this
