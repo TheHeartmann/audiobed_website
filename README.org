@@ -24,18 +24,21 @@
       - [X] Python (YAPF)
         - [X] Format
         - [X] Make sure YAPF is installed (gets installed in init_repo)
-*** TODO Decide on build process [0/1] [0%]
+*** TODO Decide on build process [1/1] [100%]
     Should the markup on the site be completely in elm, or should as much as possible be static HTML?
     If the latter, how do we want to do that? Pure HTML? Rust templating?
-    - [ ] Decide what to do about HTML
-      - Use straight HTML?
-      - Use pure elm?
-      - Use Rust templates
-        - Alternatives include:
-          - *Maud* (this seems promising and is remarkably similar to elm's HTML module)
-          - Horrorshow
-          - Tera
-          - Handlebars
+    - [X] Decide what to do about HTML
+      Current idea:
+      - Structure project into two main frontend branches: yew and elm
+      - Leave straight HTML for later. Implement if it becomes necessary.
+      +- Use straight HTML?+
+      +- Use pure elm?+
+      +- Use Rust templates+
+        +- Alternatives include:+
+          +- *Maud* (this seems promising and is remarkably similar to elm's HTML module)+
+          +- Horrorshow+
+          +- Tera+
+          +- Handlebars+
 *** DONE Decide on initial architecture and structure of app
     CLOSED: [2018-04-29 Sun 16:09]
     +- Should rust/server stuff be separated?+
@@ -56,13 +59,12 @@
 *** TODO Set up Heroku integration [1/3] [33%]
     - [X] Set up automatic publish on push to master
     - [-] Configure buildpacks
-      - [-] [[https://github.com/emk/heroku-buildpack-rust][Rust]]
+      - [X] [[https://github.com/emk/heroku-buildpack-rust][Rust]]
         - [X] Follow github guide
         - [X] Follow [[http://www.duelinmarkers.com/2017/10/21/how-to-deploy-a-rocket-application-to-heroku.html][this guide]] and [[https:github.com/SergioBenitez/Rocket/issues/171][this github issue]]
-          - Haven't set base_url or ROCKET_ENV
-        - [ ] Test
-      - [-] [[https://github.com/srid/heroku-buildpack-elm][Elm]]
-        - [X] Main Elm
+        - [X] Test
+      - [ ] [[https://github.com/srid/heroku-buildpack-elm][Elm]]
+        - [ ] Main Elm
         - [ ] Might need static?
         - [ ] Test
     - [-] Set up multiple versions of the site for multiple branches [2/3] [66%]
@@ -77,7 +79,7 @@
             app:
                 ...
                 {branch}: audiobed-{branch}
-*** Administrative tasks [2/5] [40%]
+*** Administrative tasks [2/6] [33%]
     - [X] Remove .vscode from git
       - [X] delete
       - [X] git rm -rf --cached
@@ -88,3 +90,5 @@
       - [X] remove pandoc doc generation
     - [ ] Add Clement to cargo.toml
     - [ ] Create 'getting started' section
+    - [ ] Create frontend-elm branch off of dev
+    - [ ] Create frontend-yew branch off of dev
