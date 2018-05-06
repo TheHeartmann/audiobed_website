@@ -43,9 +43,12 @@
     CLOSED: [2018-04-29 Sun 16:09]
     +- Should rust/server stuff be separated?+
     +- Suggestion: /server/src /content+
-*** TODO Set up Travis build process [3/5] [60%]
+*** TODO Set up Travis build process [4/6] [66%]
     - [X] Init travis
     - [X] Set up heroku api key
+    - [X] Replace email notifications with Slack notifications
+      - [X] Set up slack channel for this
+      - [X] Configure Travis
     - [X] Set up automatic deploy based on branch
     +- [ ] Set up automatic compilation of Elm to html+
     - [ ] Set up file renaming on push [0/2] [0%]
@@ -79,7 +82,7 @@
             app:
                 ...
                 {branch}: audiobed-{branch}
-*** Administrative tasks [2/6] [33%]
+*** Administrative tasks [2/7] [28%]
     - [X] Remove .vscode from git
       - [X] delete
       - [X] git rm -rf --cached
@@ -92,3 +95,7 @@
     - [ ] Create 'getting started' section
     - [ ] Create frontend-elm branch off of dev
     - [ ] Create frontend-yew branch off of dev
+    - [ ] Improve project structure
+      - [ ] Separate into backend and frontend / Rust and elm
+      - [ ] Make dist dir
+      - [ ] Place static html / css in dist?
