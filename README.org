@@ -1,4 +1,7 @@
 * Audiobed website project
+  #+CAPTION: Build status
+  [[https://travis-ci.org/TheHeartmann/audiobed_website][https://travis-ci.org/TheHeartmann/audiobed_website.svg?branch=master#.svg]]
+
   The goal of this project is to create a simple static website for the purposes of learning and gaining experience with Rust (server), Elm (front-end), and, to a lesser degree, CSS (in particular: CSS grid).
 
   Furthermore, in the interest of gaining more experience with deployment and integration systems, the project will use Travis CI for integration testing and deployment to Heroku.
