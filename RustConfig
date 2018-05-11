@@ -1,1 +1,2 @@
 VERSION=nightly
+BUILD_PATH=./backend

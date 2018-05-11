@@ -1,0 +1,11 @@
+[global]
+project_root = "../"
+
+[development]
+content_dir = "frontend"
+
+[staging]
+content_dir = "dist"
+
+[prod]
+content_dir = "dist"

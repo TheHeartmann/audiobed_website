@@ -16,8 +16,9 @@
     - [X] Set up remote
     - [X] Invite collaborators
 	- [X] Collaborators confirm invite
-*** TODO Git commit hooks? [1/2] [50%]
-    - [X] Automatic md export of `README.org` to `README.md`
+*** TODO Git commit hooks? [0/2] [0%]
+    +- [X] Automatic md export of `README.org` to `README.md`+
+    - [ ] Pre-push hook that runs test suites and fails if the tests do
     - [-] Formatting source code [3/6] [50%]
       - [ ] CSS?
       - [X] Elm
@@ -85,7 +86,11 @@
             app:
                 ...
                 {branch}: audiobed-{branch}
-*** Administrative tasks [2/7] [28%]
+*** TODO Look into Coveralls.io [0/3] [0%]
+    - [ ] Read up
+    - [ ] Find out whether it covers Rust and/or Elm
+    - [ ] Decide on integration strategy
+*** Administrative tasks [3/7] [42%]
     - [X] Remove .vscode from git
       - [X] delete
       - [X] git rm -rf --cached
@@ -98,7 +103,7 @@
     - [ ] Create 'getting started' section
     - [ ] Create frontend-elm branch off of dev
     - [ ] Create frontend-yew branch off of dev
-    - [ ] Improve project structure
-      - [ ] Separate into backend and frontend / Rust and elm
-      - [ ] Make dist dir
-      - [ ] Place static html / css in dist?
+    - [X] Improve project structure
+      - [X] Separate into backend and frontend / Rust and elm
+      - [X] Make dist dir
+      - +[ ] Place static html / css in dist?+
