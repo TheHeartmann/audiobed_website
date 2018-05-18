@@ -1,1 +1,1 @@
-web: ROCKET_PORT=$PORT ROCKET_ENV=prod ./backend/target/release/audiobed_website
+web: cd backend && ROCKET_PORT=$PORT ROCKET_ENV=prod ./target/release/audiobed_website

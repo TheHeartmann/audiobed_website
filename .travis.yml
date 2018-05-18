@@ -3,8 +3,10 @@ rust:
   - nightly
 matrix:
   fast_finish: true
+after_success: python3 ./build_process/file_handling.py && git add dist/* -f && git commit -a -m "Travis build commit after setting up for prod."
 deploy:
   - provider: heroku
+    skip_cleanup: true
     api_key:
       secure: KekCmKi2FdW5v6NOyqREtREtNlJrndXPH3FG/97ofjRyiJnxX6jAOva38WE4laWS9vmK6678sDM6NXKNdn42h0vgOIuUJhStCIVJ2xb0t24JjGQPJzrtuH76X3lruL+/cOvpmc3BcRajqPd4jzmrq8FjzStIjd5jaKpRIK+8D2KD7Cywr7RmEaTAXI+tkxnY6OFyBF6XFhEZce9ToLl42ZXwh67bJTLbfwImG78wAA0KwyF3pAUCKxW5wRb3lIO1S26hBmb1fV7rGhvdg5Zf2Ph8Gjsow1ZLfc22eEK52ILjud0KIA5FTW+28M5OLudzpw+EBsdX/WfzpZGYqijirWSAmVDYnNiTDL63WMZe2D0olyLoDc0mc5nG3P7HSHY87uafF3I9yStKj9FnSvq3WT8+NYW6pVr3I10gzOxVA5SCtobd6p4A4Qxp4oGADa3YjkPWcmlNlFv2Td4i+1WDKdniSucXIFphwKr3Zqaa1tpWKwAOrjp5Hx65NQyZ+PoikHXpSqT3N5t+t8dLSH6Gozlv6YjpPwzwK9wxLM0VSHipeC2D64sIPmLYYXExmI7l+Zn5DitL/jaU9YQFl0Y/EVu+02g4Wv6uLMOzmgLg+gqO5+aO+cDFoALCsmYnnaMCacFPED5dTXS2D3qposPxOeztujLR3N2hLGxnDL8Hrx0=
     app:

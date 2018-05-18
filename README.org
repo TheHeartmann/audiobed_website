@@ -28,7 +28,8 @@
       - [X] Python (YAPF)
         - [X] Format
         - [X] Make sure YAPF is installed (gets installed in init_repo)
-*** TODO Decide on build process [1/1] [100%]
+*** DONE Decide on build process [1/1] [100%]
+    CLOSED: [2018-05-18 Fri 10:04]
     Should the markup on the site be completely in elm, or should as much as possible be static HTML?
     If the latter, how do we want to do that? Pure HTML? Rust templating?
     - [X] Decide what to do about HTML
@@ -47,21 +48,23 @@
     CLOSED: [2018-04-29 Sun 16:09]
     +- Should rust/server stuff be separated?+
     +- Suggestion: /server/src /content+
-*** TODO Set up Travis build process [4/6] [66%]
+*** TODO Set up Travis build process [5/6] [83%]
     - [X] Init travis
     - [X] Set up heroku api key
     - [X] Replace email notifications with Slack notifications
       - [X] Set up slack channel for this
       - [X] Configure Travis
     - [X] Set up automatic deploy based on branch
-    +- [ ] Set up automatic compilation of Elm to html+
-    - [ ] Set up file renaming on push [0/2] [0%]
-      - [ ] Write script to do this
-      - [ ] test said script
+    - [X] Set up file renaming on push [4/4] [100%]
+      - [X] Write script to do this
+      - [X] test said script
+      - [X] Integrate into Travis build process
+      - [X] Push with dist to heroku
+        - [X] Find out whether the changes must be committed or not
+        - [X] If the latter, commit. Else: leave as is.
       - To avoid caching issues, every time a JS, CSS, HTML file is updated, its name should change. This way, a browser will never request a stale version of a certain file.
-      - Suggestion: each file should have appended to the name the commit hash for the last change to the file (e.g. `main-8fe642ed.html`)
-      - Alternatively, if the above gets too difficult, it's also possible to use the hash of the commit that triggered the publish
-      - Solution: make the build system rename relevant files in place and change all references to the files before building?
+      - Suggestion: each file should have appended to the name the commit hash for the last change to the file (e.g. `main.html@8fe642ed`)
+      - Solution: build system copies files to a dist folder and renames all references to them.
     - [ ] Set up testing
 *** TODO Set up Heroku integration [1/3] [33%]
     - [X] Set up automatic publish on push to master

@@ -60,7 +60,7 @@ fn main() {
             let content_dir = get_content_dir(&rocket);
             Ok(rocket.manage(content_dir))
         }))
-        .mount("/", routes![index, files, error_404, bad])
+        .mount("/", routes![index, files, error_404])
         .catch(errors![not_found])
         .launch();
 }
