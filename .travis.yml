@@ -4,7 +4,7 @@ rust:
 matrix:
   fast_finish: true
 before_script: cd backend
-after_success: cd .. && python3 ./build_process/file_handling.py && git add dist/* -f && git commit -a -m "Travis build commit after setting up for prod."
+after_success: cd .. && python3 ./build_process/copy_files_for_dist.py && git add dist/* -f && git commit -a -m "Travis build commit after setting up for prod."
 deploy:
   - provider: heroku
     skip_cleanup: true
