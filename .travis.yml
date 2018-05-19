@@ -1,13 +1,16 @@
-language: rust
 rust:
   - nightly
 matrix:
   include:
     # main application
-    - fast_finish: true
-      before_install: cd backend
+    - language: rust
+      fast_finish: true
+      before_install:
+        - cd backend
+        - python3 -V
       before_cache: cd ..
 
+      python: 3.6.5
       after_success:
         - python3 ./build_process/copy_files_for_dist.py
         - git add dist/* -f
@@ -23,7 +26,7 @@ matrix:
             frontend/elm/dev: audiobed-sandbox
 
     # ELM frontend
-    # copied from https://github.com/dwyl/learn-travis/issues/31
+    # ~copied from~ _heavily inspired by_ https://github.com/dwyl/learn-travis/issues/31
     - language: node_js # elm is installed from npm (see install below)
       node_js: node     # use "latest" version of Node.js
       fast_finish: true
