@@ -1,8 +1,12 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import re
 import sys
+
+import subprocess
+from subprocess import PIPE, STDOUT
 
 from file_definitions import NO_EXT_PYTHON_FILES
 from misc import start_hook, end_hook, print_message
@@ -45,11 +49,11 @@ def format(format_cmd, files, *flags):
     return True
 
 
-def elm_format(files):
-    return format('elm-format', files, '--yes')
+def elm_format_cmd(files):
+    return ('elm-format', files, '--yes')
 
 
-def rustfmt(files):
+def rustfmt_cmd(files):
     '''
     If rustfmt successfully reformatted the code it will exit with 0 exit
     status. Exit status 1 signals some unexpected error, like an unknown option
@@ -59,35 +63,98 @@ def rustfmt(files):
     resolved automatically. For example, if you have a very long comment line
     rustfmt doesn't split it. Instead it prints a warning and exits with 3.
     '''
-    return format('rustfmt', files)
+    return ('rustfmt', files)
 
 
 def get_files(files, ext):
     return [x for x in files if re.search(r'\w+\.{}$'.format(ext), x)]
 
 
-def yapf(files):
-    return format('yapf', files, '-i', '--style pep8')
+def yapf_cmd(files):
+    return ('yapf', files, '-i', '--style pep8')
+
+
+def run_formatter(*format_cmds):
+    return [format(*x) for x in format_cmds]
+
+
+def test(cmd, test_dir):
+    origin = os.getcwd()
+    try:
+        os.chdir(test_dir)
+        try:
+            print_message('Running command {}'.format(cmd))
+            return 0, subprocess.check_output([cmd], stderr=PIPE)
+        except subprocess.CalledProcessError as e:
+            return e.returncode, e.output
+    finally:
+        os.chdir(origin)
+
+
+class TestSettings():
+    def __init__(self, cmd, directory):
+        self.cmd = cmd
+        self.dir = directory
+
+
+class TestResult():
+    def __init__(self, return_code, msg):
+        self.return_code = return_code
+        self.msg = msg
+
+
+class TestFailureException(Exception):
+    pass
+
+
+def run_tests(*test_settings):
+    return [TestResult(*test(x.cmd, x.dir)) for x in test_settings]
+
+
+def test_validation(*test_settings):
+    if test_settings:
+        test_results = run_tests(*test_settings)
+        failures = [x.msg for x in test_results if x.return_code != 0]
+        if failures:
+            raise TestFailureException('\n\n'.join(failures))
+        else:
+            print_message('✓ All tests passed!')
 
 
 def main(changed_files):
     def get_committed_files(ext):
         return get_files(changed_files, ext)
 
-    elm_format(get_committed_files('elm'))
-
-    rustfmt(get_committed_files('rs'))
-
+    elm_files = get_committed_files('elm')
+    rust_files = get_committed_files('rs')
     python_files = get_committed_files('py') \
         + [x for x in changed_files if x.rsplit(os.path.sep)[-1] in NO_EXT_PYTHON_FILES]
-    yapf(python_files)
+
+    test_settings = []
+    if elm_files:
+        test_settings.append(
+            TestSettings('elm-test', os.path.join('frontend', 'elm')))
+    if rust_files:
+        pass
+    # format
+    run_formatter(
+        elm_format_cmd(elm_files), rustfmt_cmd(rust_files),
+        yapf_cmd(python_files))
+
+    # run tests
+    test_validation(*test_settings)
 
 
 if __name__ == "__main__":
     start_hook('Performing pre-commit validation.')
-    changed_files = get_changed_files()
+    CHANGED_FILES = get_changed_files()
     try:
-        main(changed_files)
+        main(CHANGED_FILES)
+    except TestFailureException as e:
+        end_hook(
+            '✘ Tests failed! Check the output and fix your code before committing.\n\n{}'.
+            format(e))
+        sys.exit(1)
     except Exception as e:
         end_hook(e)
         sys.exit(1)
