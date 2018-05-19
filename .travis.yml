@@ -1,12 +1,10 @@
 language: rust
 rust:
-- nightly
+  - nightly
 matrix:
   include:
     # main application
-    - rust:
-      - nightly
-      fast_finish: true
+    - fast_finish: true
       before_install: cd backend
       before_cache: cd ..
 
