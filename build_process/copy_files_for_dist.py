@@ -18,17 +18,19 @@ class FileStatus():
         self.revision = revision
 
     def name_at_rev(self):
-        return f'{self.name}@{self.revision}'
+        return '{}@{}'.format(self.name, self.revision)
 
 
 def get_file_status(directory, extensions, ignore):
     file_status = []
     for dirpath, dirs, files in os.walk(directory):
         dirs[:] = [d for d in dirs if not re.match(ignore, d)]
-        for f in [x for x in files if os.path.splitext(x)[1] in extensions and not re.match(ignore, x)]:
-            rev = os.popen(
-                f'git log -n 1 --pretty=format:%h -- {os.path.join(dirpath, f)}'
-            ).read().strip()
+        for f in [
+                x for x in files if os.path.splitext(x)[1] in extensions
+                and not re.match(ignore, x)
+        ]:
+            rev = os.popen('git log -n 1 --pretty=format:%h -- {}'.format(
+                os.path.join(dirpath, f))).read().strip()
             relative_path = os.path.sep.join(
                 os.path.join(dirpath, f).split(os.path.sep)[1:])
             file_status.append(FileStatus(relative_path, rev))
@@ -44,7 +46,7 @@ def rename_files(dir, *file_statuses):
 
             os.rename(path(fs.name), path(fs.name_at_rev()))
     except Exception as e:
-        print(f'Something went wrong while renaming files: {e}')
+        print('Something went wrong while renaming files: {}'.format(e))
         return False
     return True
 
@@ -67,9 +69,11 @@ def rename_references(dir, *file_statuses):
             with open(path, 'w', encoding='utf8') as file:
                 file.write(replace(content))
 
+
 def ignore(pattern):
     def _ignore(_, content):
         return [x for x in content if re.match(pattern, x)]
+
     return _ignore
 
 
@@ -77,19 +81,18 @@ def main(root_dir, target_dir, extensions, ignore_pattern):
     origin = os.getcwd()
     try:
         os.chdir(root_dir)
-        file_status_list = get_file_status('frontend',
-                                           [f'.{x}' for x in extensions], ignore_pattern)
+        file_status_list = get_file_status(
+            'frontend', ['.{}'.format(x) for x in extensions], ignore_pattern)
 
         if os.path.exists(target_dir):
             shutil.rmtree(target_dir)
-        shutil.copytree(
-            'frontend', target_dir, ignore=ignore(ignore_pattern))
+        shutil.copytree('frontend', target_dir, ignore=ignore(ignore_pattern))
         if rename_files(target_dir, *file_status_list):
             rename_references(target_dir, *file_status_list)
             rename_references(
                 os.path.join('backend', 'src'), *file_status_list)
     except Exception as e:
-        print(f'Something went terribly wrong: {e}')
+        print('Something went terribly wrong: {}'.format(e))
         sys.exit(1)
     finally:
         os.chdir(origin)
@@ -114,4 +117,8 @@ if __name__ == '__main__':
         '-i', '--ignore', help='Patterns to ignore', default='elm')
 
     args = parser.parse_args()
-    main(args.root, args.target, args.extensions.split(), ignore_pattern=args.ignore)
+    main(
+        args.root,
+        args.target,
+        args.extensions.split(),
+        ignore_pattern=args.ignore)

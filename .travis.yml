@@ -5,16 +5,13 @@ matrix:
     # main application
     - language: rust
       fast_finish: true
-      before_install:
-        - cd backend
-        - python3 -V
+      before_install: cd backend
       before_cache: cd ..
 
-      python: 3.6.5
       after_success:
         - python3 ./build_process/copy_files_for_dist.py
         - git add dist/* -f
-        - git commit -a -m "Travis dist preparation for commit: $TRAVIS_COMMIT ($TRAVIS_COMMIT_MESSAGE)"
+        - git commit -a -m "Travis dist preparation"
       deploy:
         - provider: heroku
           skip_cleanup: true
