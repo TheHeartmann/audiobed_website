@@ -217,3 +217,6 @@ venv.bak/
 
 assets/
 content/
+
+# to avoid checking in auto-generated files
+elm.js
