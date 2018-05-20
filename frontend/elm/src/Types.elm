@@ -1,5 +1,6 @@
 module Types exposing (..)
 
+import OpaqueTypes.UnitInterval exposing (UnitInterval)
 import RemoteData exposing (WebData)
 
 
@@ -13,7 +14,7 @@ type PlaybackState
 
 type alias AudioTrack =
     { state : PlaybackState
-    , volume : Int
+    , volume : UnitInterval
     }
 
 
