@@ -1,9 +1,6 @@
 rust: nightly
 env:
-  - ELM_ROOT=$TRAVIS_BUILD_DIR/frontend/elm
-  - SERVER_ROOT=$TRAVIS_BUILD_DIR/backend
-  - ELM_VERSION=0.18.0
-  - ELM_TEST=0.18.12
+  - ELM_ROOT=$TRAVIS_BUILD_DIR/frontend/elm SERVER_ROOT=$TRAVIS_BUILD_DIR/backend ELM_VERSION=0.18.0 ELM_TEST=0.18.12
 matrix:
   include:
     # server
