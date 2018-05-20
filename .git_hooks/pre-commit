@@ -22,10 +22,11 @@ def is_tracked(path):
         path)).readline().strip() == path
 
 
-def add_to_commit(file_string):
-    if not is_tracked(file_string):
-        print('New file: {}. Adding to git.'.format(file_string))
-    os.system('git add {}'.format(file_string))
+def add_to_commit(*files):
+    for f in files:
+        if not is_tracked(f):
+            print('New file: {}. adding to git.'.format(f))
+    os.system('git add {}'.format(' '.join(files)))
 
 
 def format(format_cmd, files, *flags):
@@ -45,7 +46,7 @@ def format(format_cmd, files, *flags):
         There was an error in formatting the committed code for {}.
         The process exited with code {}'''.format(file_string, return_code))
     print_message("Successfully formatted {}".format(file_string))
-    add_to_commit(file_string)
+    add_to_commit(*file_string.split())
     return True
 
 
