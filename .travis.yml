@@ -1,17 +1,63 @@
-rust:
-  - nightly
+rust: nightly
+env:
+  - ELM_ROOT=$TRAVIS_BUILD_DIR/frontend/elm SERVER_ROOT=$TRAVIS_BUILD_DIR/backend
 matrix:
   include:
-    # main application
+    # server
     - language: rust
       fast_finish: true
-      before_install: cd backend
-      before_cache: cd ..
+      before_install: cd $SERVER_ROOT
+
+    # full application
+    - language: rust
+      fast_finish: true
+      node_js: node     # use "latest" version of Node.js
+
+      env:
+        - ELM_VERSION=0.18.0 ELM_TEST=0.18.12
+
+
+      before_install:
+        - cd $ELM_ROOT
+        - | # build time improvement see: https://git.io/vQcqz
+          if [ ! -d sysconfcpus/bin ];
+          then
+            git clone https://github.com/obmarg/libsysconfcpus.git;
+            cd libsysconfcpus;
+            ./configure --prefix=$ELM_ROOT/sysconfcpus;
+            make && make install;
+            cd ..;
+          fi
+
+      install: 
+        - cd $ELM_ROOT
+        - npm install -g elm@$ELM_VERSION elm-test@$ELM_TEST
+        # the next 3 lines are courtesy of @rtfeldman https://git.io/vbj0j
+        - mv $(npm config get prefix)/bin/elm-make $(npm config get prefix)/bin/elm-make-old
+        - printf "#\041/bin/bash\n\necho \"Running elm-make with sysconfcpus -n 2\"\n\n$TRAVIS_BUILD_DIR/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old \"\$@\"" > $(npm config get prefix)/bin/elm-make
+        - chmod +x $(npm config get prefix)/bin/elm-make
+        - travis_retry elm package install --yes # install main project dependencies
+
+        # server stuff
+        - cd $SERVER_ROOT
+        - cargo build --verbose
+
+        # go back to the top
+        - cd $TRAVIS_BUILD_DIR
+
+      script:
+        - cd $ELM_ROOT
+        - elm-test --verbose
+        - cd $SERVER_ROOT
+        - cargo build --verbose
+        - cargo test --verbose
+        - cd $TRAVIS_BUILD_DIR
 
       after_success:
         - python3 ./build_process/copy_files_for_dist.py
         - git add dist/* -f
         - git commit -a -m "Travis dist preparation"
+
       deploy:
         - provider: heroku
           skip_cleanup: true
@@ -31,22 +77,14 @@ matrix:
       env:
         - ELM_VERSION=0.18.0 ELM_TEST=0.18.12
 
-      cache:
-        directories: # so subsequent builds run faster
-          - elm-stuff/build-artifacts
-          - elm-stuff/packages
-          - tests/elm-stuff/build-artifacts # elm-test init creates a "tests/" dir
-          - tests/elm-stuff/packages        # cache files that haven't changed
-          - sysconfcpus
-          - $HOME/.npm # https://stackoverflow.com/a/42523517/1148249
-
       before_install:
+        - cd $ELM_ROOT
         - | # build time improvement see: https://git.io/vQcqz
           if [ ! -d sysconfcpus/bin ];
           then
             git clone https://github.com/obmarg/libsysconfcpus.git;
             cd libsysconfcpus;
-            ./configure --prefix=$TRAVIS_BUILD_DIR/sysconfcpus;
+            ./configure --prefix=$ELM_ROOT/sysconfcpus;
             make && make install;
             cd ..;
           fi
@@ -59,9 +97,20 @@ matrix:
         - chmod +x $(npm config get prefix)/bin/elm-make
         - travis_retry elm package install --yes # install main project dependencies
 
-      before_install: cd ./frontend/elm
       script:
         - elm-test --verbose
+
+# shared config
+
+cache:
+  cargo: true
+  directories: # so subsequent builds run faster
+    - $ELM_ROOT/elm-stuff/build-artifacts
+    - $ELM_ROOT/elm-stuff/packages
+    - $ELM_ROOT/tests/elm-stuff/build-artifacts # elm-test init creates a "tests/" dir
+    - $ELM_ROOT/tests/elm-stuff/packages        # cache files that haven't changed
+    - sysconfcpus
+    - $HOME/.npm # https://stackoverflow.com/a/42523517/1148249
 
 notifications:
   email: false

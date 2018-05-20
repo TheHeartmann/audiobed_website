@@ -21,6 +21,11 @@ class FileStatus():
         return '{}@{}'.format(self.name, self.revision)
 
 
+def get_revision(x):
+    return os.popen(
+        'git log -n 1 --pretty=format:%h -- {}'.format(x)).read().strip()
+
+
 def get_file_status(directory, extensions, ignore):
     file_status = []
     for dirpath, dirs, files in os.walk(directory):
@@ -29,12 +34,40 @@ def get_file_status(directory, extensions, ignore):
                 x for x in files if os.path.splitext(x)[1] in extensions
                 and not re.match(ignore, x)
         ]:
-            rev = os.popen('git log -n 1 --pretty=format:%h -- {}'.format(
-                os.path.join(dirpath, f))).read().strip()
+            rev = get_revision(os.path.join(dirpath, f))
             relative_path = os.path.sep.join(
                 os.path.join(dirpath, f).split(os.path.sep)[1:])
             file_status.append(FileStatus(relative_path, rev))
     return file_status
+
+
+def elm_compile_to_file_status(output_dir, output_file, elm_dir, elm_file):
+    output_file_relpath = os.path.join(output_dir, output_file)
+    output_file_abspath = os.path.abspath(output_file_relpath)
+    elm_file_abspath = os.path.abspath(os.path.join(elm_dir, 'src', elm_file))
+    origin = os.getcwd()
+
+    # create output dir
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    assert output_file not in os.listdir(
+        output_dir), "The script will fail if {} is already present.".format(
+            output_file_relpath)
+
+    # elm-make
+    os.chdir(os.path.abspath(elm_dir))
+    return_code = os.system("elm-make {} --output={}".format(
+        elm_file_abspath, output_file_abspath))
+    os.chdir(origin)
+
+    assert return_code == 0, "Could not compile elm file to {}".format(
+        output_dir)
+
+    rev = get_revision(elm_dir)
+    relative_path = os.path.sep.join(
+        output_file_relpath.split(os.path.sep)[1:])
+    return FileStatus(relative_path, rev)
 
 
 def rename_files(dir, *file_statuses):
@@ -84,6 +117,13 @@ def main(root_dir, target_dir, extensions, ignore_pattern):
         file_status_list = get_file_status(
             'frontend', ['.{}'.format(x) for x in extensions], ignore_pattern)
 
+        # special cases
+        # elm
+        file_status_list.append(
+            elm_compile_to_file_status(
+                os.path.join('frontend', 'js'), 'elm.js',
+                os.path.join('frontend', 'elm'), 'Main.elm'))
+
         if os.path.exists(target_dir):
             shutil.rmtree(target_dir)
         shutil.copytree('frontend', target_dir, ignore=ignore(ignore_pattern))
@@ -114,7 +154,7 @@ if __name__ == '__main__':
         help='The file types to change.',
         default='js css html')
     parser.add_argument(
-        '-i', '--ignore', help='Patterns to ignore', default='elm')
+        '-i', '--ignore', help='Patterns to ignore', default='^elm$')
 
     args = parser.parse_args()
     main(
