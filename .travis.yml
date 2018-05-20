@@ -1,6 +1,9 @@
 rust: nightly
 env:
-  - ELM_ROOT=$TRAVIS_BUILD_DIR/frontend/elm SERVER_ROOT=$TRAVIS_BUILD_DIR/backend
+  - ELM_ROOT=$TRAVIS_BUILD_DIR/frontend/elm
+  - SERVER_ROOT=$TRAVIS_BUILD_DIR/backend
+  - ELM_VERSION=0.18.0
+  - ELM_TEST=0.18.12
 matrix:
   include:
     # server
@@ -12,10 +15,6 @@ matrix:
     - language: rust
       fast_finish: true
       node_js: node     # use "latest" version of Node.js
-
-      env:
-        - ELM_VERSION=0.18.0 ELM_TEST=0.18.12
-
 
       before_install:
         - cd $ELM_ROOT
@@ -29,7 +28,7 @@ matrix:
             cd ..;
           fi
 
-      install: 
+      install:
         - cd $ELM_ROOT
         - npm install -g elm@$ELM_VERSION elm-test@$ELM_TEST
         # the next 3 lines are courtesy of @rtfeldman https://git.io/vbj0j
@@ -73,9 +72,6 @@ matrix:
     - language: node_js # elm is installed from npm (see install below)
       node_js: node     # use "latest" version of Node.js
       fast_finish: true
-
-      env:
-        - ELM_VERSION=0.18.0 ELM_TEST=0.18.12
 
       before_install:
         - cd $ELM_ROOT
