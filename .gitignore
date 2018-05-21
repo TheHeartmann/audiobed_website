@@ -220,3 +220,6 @@ content/
 
 # to avoid checking in auto-generated files
 elm.js
+node_modules/
+package.json
+yarn.lock
