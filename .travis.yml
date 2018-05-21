@@ -24,8 +24,15 @@ matrix:
             make && make install;
             cd ..;
           fi
+        - cd $TRAVIS_BUILD_DIR
 
       install:
+
+        # formatting tools
+        - npm install -g html-minifier uglify-js postcss-cli
+        - npm init -y
+        - npm install cssnano --save-dev
+
         - cd $ELM_ROOT
         - npm install -g elm@$ELM_VERSION elm-test@$ELM_TEST
         # the next 3 lines are courtesy of @rtfeldman https://git.io/vbj0j

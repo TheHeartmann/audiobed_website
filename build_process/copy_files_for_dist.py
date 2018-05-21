@@ -11,14 +11,24 @@ import re
 import shutil
 import sys
 
+import subprocess
+from subprocess import PIPE
+
 
 class FileStatus():
     def __init__(self, file_name, revision):
         self.path, self.name = os.path.split(file_name)
+        self.extension = os.path.splitext(self.name)[1]
         self.revision = revision
 
     def name_at_rev(self):
         return '{}@{}'.format(self.name, self.revision)
+
+
+class CmdResult():
+    def __init__(self, return_code, output):
+        self.return_code = return_code
+        self.output = output
 
 
 def get_revision(x):
@@ -51,10 +61,6 @@ def elm_compile_to_file_status(output_dir, output_file, elm_dir, elm_file):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    assert output_file not in os.listdir(
-        output_dir), "The script will fail if {} is already present.".format(
-            output_file_relpath)
-
     # elm-make
     os.chdir(os.path.abspath(elm_dir))
     return_code = os.system("elm-make {} --output={}".format(
@@ -77,7 +83,9 @@ def rename_files(dir, *file_statuses):
             def path(name):
                 return os.path.join(dir, fs.path, name)
 
-            os.rename(path(fs.name), path(fs.name_at_rev()))
+            file_path = path(fs.name)
+            minify(file_path)
+            os.rename(file_path, path(fs.name_at_rev()))
     except Exception as e:
         print('Something went wrong while renaming files: {}'.format(e))
         return False
@@ -110,6 +118,61 @@ def ignore(pattern):
     return _ignore
 
 
+def get_command(ext, source, target):
+    commands = {
+        '.js': {
+            'cmd': 'uglifyjs {} -o {}',
+            'options': ['-m']
+        },
+        '.css': {
+            'cmd': 'postcss {} -o {}',
+            'options': ['--no-map']
+        },
+        '.html': {
+            'cmd':
+            'html-minifier {} -o {}',
+            'options': [
+                '--collapse-boolean-attributes',
+                '--collapse-inline-tag-whitespace', '--collapse-whitespace',
+                '--minify-css true', '--minify-js true', '--remove-comments',
+                '--remove-empty-attributes', '--remove-redundant-attributes',
+                '--remove-script-type-attributes',
+                '--remove-style-link-type-attributes'
+            ]
+        }
+    }
+    cmd_dict = commands.get(ext)
+    if not cmd_dict:
+        return None
+    cmd = cmd_dict.get('cmd').format(source, target)
+    return '{} {}'.format(cmd, ' '.join(cmd_dict.get('options', []))).strip()
+
+
+def run_command(cmd):
+    try:
+        print('Running command {}'.format(cmd))
+        return CmdResult(0, subprocess.check_output(cmd.split(), stderr=PIPE))
+    except subprocess.CalledProcessError as e:
+        return CmdResult(e.returncode, e.output)
+    except Exception as e:
+        raise Exception("Encountered an unexpected exception: {}".format(e))
+
+
+def bundle(source_dir, target_dir, *file_statuses):
+    '''Minify and copy files to dist folder'''
+    results = []
+    for f in file_statuses:
+        target_path = os.path.join(target_dir, f.path)
+        if not os.path.exists(target_path):
+            os.makedirs(target_path)
+
+        source = os.path.join(source_dir, f.path, f.name)
+        target = os.path.join(target_dir, f.path, f.name_at_rev())
+        results.append(run_command(get_command(f.extension, source, target)))
+
+    return results
+
+
 def main(root_dir, target_dir, extensions, ignore_pattern):
     origin = os.getcwd()
     try:
@@ -117,7 +180,13 @@ def main(root_dir, target_dir, extensions, ignore_pattern):
         file_status_list = get_file_status(
             'frontend', ['.{}'.format(x) for x in extensions], ignore_pattern)
 
-        # special cases
+        special_cases = ['elm.js']
+        # filter out special cases that may have been picked up
+        file_status_list = [
+            x for x in file_status_list if x.name not in special_cases
+        ]
+
+        # handle special cases
         # elm
         file_status_list.append(
             elm_compile_to_file_status(
@@ -126,11 +195,19 @@ def main(root_dir, target_dir, extensions, ignore_pattern):
 
         if os.path.exists(target_dir):
             shutil.rmtree(target_dir)
-        shutil.copytree('frontend', target_dir, ignore=ignore(ignore_pattern))
-        if rename_files(target_dir, *file_status_list):
-            rename_references(target_dir, *file_status_list)
-            rename_references(
-                os.path.join('backend', 'src'), *file_status_list)
+
+        bundle_results = bundle('frontend', target_dir, *file_status_list)
+        errors = [x for x in bundle_results if x.return_code != 0]
+        if errors:
+            error_messages = '\n\t'.join([x.output for x in errors])
+            raise Exception(
+                'There were errors while bundling source files to {}:\n\t{}'.
+                format(target_dir, error_messages))
+        # shutil.copytree('frontend', target_dir, ignore=ignore(ignore_pattern))
+        # if rename_files(target_dir, *file_status_list):
+        rename_references(target_dir, *file_status_list)
+        rename_references(os.path.join('backend', 'src'), *file_status_list)
+
     except Exception as e:
         print('Something went terribly wrong: {}'.format(e))
         sys.exit(1)

@@ -6,7 +6,7 @@ import re
 import sys
 
 import subprocess
-from subprocess import PIPE, STDOUT
+from subprocess import PIPE
 
 from file_definitions import NO_EXT_PYTHON_FILES
 from misc import start_hook, end_hook, print_message
