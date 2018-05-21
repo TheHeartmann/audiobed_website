@@ -1,6 +1,0 @@
-@import './normalize.css';
-
-.main-grid {
-    display: grid;
-    grid-template-rows: 1fr 50px;
-}

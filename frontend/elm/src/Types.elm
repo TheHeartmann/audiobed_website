@@ -1,5 +1,6 @@
 module Types exposing (..)
 
+import OpaqueTypes.Theme exposing (Theme)
 import OpaqueTypes.UnitInterval exposing (UnitInterval)
 import RemoteData exposing (WebData)
 
@@ -25,6 +26,7 @@ type alias Tracks =
 
 type alias Model =
     { tracks : Tracks
+    , theme : Theme
     }
 
 
@@ -41,3 +43,4 @@ type Msg
     | Pause Id
     | IncreaseVolume Id Int
     | DecreaseVolume Id Int
+    | ChangeTheme Theme
