@@ -22,9 +22,9 @@ type alias Theme =
     }
 
 
-getBackground : Theme -> ( List ( String, String ), List Css.Style )
-getBackground theme =
-    case theme.background of
+getBackground : { a | background : Background } -> ( List ( String, String ), List Css.Style )
+getBackground { background } =
+    case background of
         Static color ->
             ( [], [ Css.backgroundColor color ] )
 
