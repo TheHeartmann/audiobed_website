@@ -1,4 +1,4 @@
-module OpaqueTypes.NonEmptyList exposing (NonEmptyList, new, append, join)
+module Types.NonEmptyList exposing (NonEmptyList, new, append, join)
 
 
 type alias NonEmptyList a =

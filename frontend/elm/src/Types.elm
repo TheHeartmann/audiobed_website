@@ -1,8 +1,8 @@
 module Types exposing (..)
 
-import OpaqueTypes.Theme exposing (Theme)
-import OpaqueTypes.UnitInterval exposing (UnitInterval)
 import RemoteData exposing (WebData)
+import Types.Theme exposing (Theme)
+import Types.UnitInterval exposing (UnitInterval)
 
 
 -- MODEL

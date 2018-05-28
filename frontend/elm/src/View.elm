@@ -5,11 +5,11 @@ import FontAwesome exposing (icon, gitHub)
 import Html.Styled exposing (..)
 import Html.Styled.Attributes exposing (css, class, href, title, style)
 import Html.Styled.Events exposing (onClick)
-import OpaqueTypes.Theme as Theme exposing (Theme, getBackground)
 import Svg
 import Svg.Attributes
 import SvgIcons as Icons
 import Types exposing (Model, Msg)
+import Types.Theme as Theme exposing (Theme, getBackground)
 
 
 grid : List ( String, String ) -> List ( String, String )
@@ -24,40 +24,28 @@ mainGrid =
 
 view : { a | theme : Theme } -> Html Msg
 view { theme } =
-    div
-        [ style <|
-            grid [ ( "grid-template-columns", "1fr 1fr" ) ]
-        ]
-        [ pageHalf theme Icons.elmSvg
-        , pageHalf Theme.simple Icons.rustSvg
-        ]
-
-
-pageHalf : Theme -> Html Msg -> Html Msg
-pageHalf theme mainContent =
     let
-        ( styleList, cssList ) =
-            Theme.getBackground theme
+        backgroundTheme =
+            Theme.getBackground theme.primary.background
     in
         div
-            [ style <| mainGrid ++ styleList
+            [ style <| mainGrid
             , css <|
                 [ height <| vh 100
+                , backgroundTheme
+                , fontFamilies [ "Satisfy" ]
                 ]
-                    ++ cssList
             ]
-            [ main_ [ style <| grid [ ( "placeItems", "center" ) ] ] [ mainContent ]
-            , footer theme
+            [ main_ [ style <| grid [ ( "placeItems", "center" ) ] ] [ h1 [] [ text "Audiobed" ] ]
+            , footer theme.secondary
             ]
 
 
-footer : { a | highlight : Color, highlightFont : Color } -> Html Msg
-footer { highlight, highlightFont } =
+footer : { background : Theme.Background, fontColor : Color } -> Html Msg
+footer { background, fontColor } =
     Html.Styled.footer
         [ css
-            [ backgroundColor highlight
-            , color highlightFont
-            , textDecoration none
+            [ Theme.getBackground background
             , displayFlex
             , justifyContent center
             , alignItems center
@@ -67,6 +55,10 @@ footer { highlight, highlightFont } =
         [ a
             [ href "https://github.com/TheHeartmann/audiobed_website"
             , title "Visit us on Github"
+            , css
+                [ color fontColor
+                , textDecoration none
+                ]
             ]
             [ styledIcon gitHub ]
         ]

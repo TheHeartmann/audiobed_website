@@ -1,6 +1,6 @@
-module OpaqueTypes.RadialGradient exposing (RadialGradient, toStyle)
+module Types.RadialGradient exposing (RadialGradient, toStyle)
 
-import OpaqueTypes.NonEmptyList as NonEmptyList exposing (NonEmptyList)
+import Types.NonEmptyList as NonEmptyList exposing (NonEmptyList)
 
 
 type Extent

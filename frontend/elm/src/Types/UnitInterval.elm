@@ -1,4 +1,4 @@
-module OpaqueTypes.UnitInterval exposing (UnitInterval, fromFloat, val)
+module Types.UnitInterval exposing (UnitInterval, fromFloat, val)
 
 
 type UnitInterval

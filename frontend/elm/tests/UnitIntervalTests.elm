@@ -1,9 +1,9 @@
-module OpaqueTypesTests exposing (..)
+module UnitIntervalTests exposing (..)
 
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, float, percentage)
-import OpaqueTypes.UnitInterval as UnitInterval exposing (..)
 import Test exposing (..)
+import Types.UnitInterval as UnitInterval exposing (..)
 
 
 unitIntervalSuite : Test
