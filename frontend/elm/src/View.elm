@@ -9,6 +9,7 @@ import Svg
 import Svg.Attributes
 import SvgIcons as Icons
 import Types exposing (Model, Msg)
+import Types.CyclicList as CyclicList exposing (CyclicList)
 import Types.Theme as Theme exposing (Theme, getBackground)
 
 
@@ -22,9 +23,12 @@ mainGrid =
     grid [ ( "grid-template-rows", "1fr 50px" ) ]
 
 
-view : { a | theme : Theme } -> Html Msg
-view { theme } =
+view : { a | themes : CyclicList Theme } -> Html Msg
+view { themes } =
     let
+        theme =
+            themes.current
+
         backgroundTheme =
             Theme.getBackground theme.primary.background
     in
@@ -36,7 +40,7 @@ view { theme } =
                 , fontFamilies [ "Satisfy" ]
                 ]
             ]
-            [ main_ [ style <| grid [ ( "placeItems", "center" ) ] ] [ h1 [] [ text "Audiobed" ] ]
+            [ main_ [ style <| grid [ ( "placeItems", "center" ) ] ] [ h1 [ css <| [ color theme.primary.fontColor ] ] [ text "Audiobed" ] ]
             , footer theme.secondary
             ]
 

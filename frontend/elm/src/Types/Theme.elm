@@ -58,7 +58,7 @@ simple =
 
 anwar : Theme
 anwar =
-    { primary = { background = Image <| Css.linearGradient2 Css.toBottom (Css.stop <| hex "cbcaa5") (Css.stop <| hex "334d50") [], fontColor = white }
+    { primary = { background = Image <| Css.linearGradient2 Css.toBottom (Css.stop <| hex "cbcaa5") (Css.stop <| hex "334d50") [], fontColor = black }
     , secondary = { background = Color <| hex "fff0", fontColor = hex "d5d799" }
     }
 

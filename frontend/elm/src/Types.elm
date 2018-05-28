@@ -1,6 +1,9 @@
 module Types exposing (..)
 
+import Dict exposing (Dict)
+import Keyboard
 import RemoteData exposing (WebData)
+import Types.CyclicList exposing (CyclicList)
 import Types.Theme exposing (Theme)
 import Types.UnitInterval exposing (UnitInterval)
 
@@ -26,7 +29,7 @@ type alias Tracks =
 
 type alias Model =
     { tracks : Tracks
-    , theme : Theme
+    , themes : CyclicList Theme
     }
 
 
@@ -39,8 +42,23 @@ type alias Id =
 
 
 type Msg
-    = Play Id
-    | Pause Id
-    | IncreaseVolume Id Int
-    | DecreaseVolume Id Int
-    | ChangeTheme Theme
+    = KeyDown Char
+
+
+type KeyDownMsg
+    = CycleThemeForward
+    | CycleThemeBackward
+
+
+keyEvents : Dict Char KeyDownMsg
+keyEvents =
+    Dict.singleton 'T' CycleThemeForward
+        |> Dict.insert 'N' CycleThemeBackward
+
+
+
+-- TODO: add these later
+-- | Play Id
+-- | Pause Id
+-- | IncreaseVolume Id Int
+-- | DecreaseVolume Id Int
