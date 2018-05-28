@@ -190,7 +190,7 @@ def main(root_dir, target_dir, extensions, ignore_pattern):
         # elm
         file_status_list.append(
             elm_compile_to_file_status(
-                os.path.join('frontend', 'js'), 'elm.js',
+                os.path.join('frontend', 'generated'), 'elm.js',
                 os.path.join('frontend', 'elm'), 'Main.elm'))
 
         if os.path.exists(target_dir):
