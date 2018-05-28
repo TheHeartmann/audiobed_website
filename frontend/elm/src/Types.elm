@@ -1,6 +1,8 @@
 module Types exposing (..)
 
 import RemoteData exposing (WebData)
+import Types.Theme exposing (Theme)
+import Types.UnitInterval exposing (UnitInterval)
 
 
 -- MODEL
@@ -13,7 +15,7 @@ type PlaybackState
 
 type alias AudioTrack =
     { state : PlaybackState
-    , volume : Int
+    , volume : UnitInterval
     }
 
 
@@ -24,6 +26,7 @@ type alias Tracks =
 
 type alias Model =
     { tracks : Tracks
+    , theme : Theme
     }
 
 
@@ -40,3 +43,4 @@ type Msg
     | Pause Id
     | IncreaseVolume Id Int
     | DecreaseVolume Id Int
+    | ChangeTheme Theme

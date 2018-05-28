@@ -219,4 +219,7 @@ assets/
 content/
 
 # to avoid checking in auto-generated files
-elm.js
+generated/
+node_modules/
+package.json
+yarn.lock

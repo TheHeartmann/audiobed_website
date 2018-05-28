@@ -20,9 +20,26 @@ impl ContentDir {
     }
 }
 
+fn get_elm(content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
+    NamedFile::open(
+        Path::new(&content_dir.path)
+            .join("html")
+            .join("index-elm.html"),
+    )
+}
+
+#[get("/elm")]
+fn elm(content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
+    get_elm(content_dir)
+}
+
+#[get("/elm/<_path..>", rank = 1)]
+fn elm_params(_path: PathBuf, content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
+    get_elm(content_dir)
+}
+
 #[get("/")]
 fn index(content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
-    println!("Serving content from {:?}", content_dir);
     NamedFile::open(
         Path::new(&content_dir.path)
             .join("html")
@@ -30,7 +47,7 @@ fn index(content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
     )
 }
 
-#[get("/<file..>")]
+#[get("/<file..>", rank = 2)]
 fn files(file: PathBuf, content_dir: rocket::State<ContentDir>) -> Option<NamedFile> {
     NamedFile::open(Path::new(&content_dir.path).join(file)).ok()
 }
@@ -50,7 +67,6 @@ fn get_content_dir(rocket: &rocket::Rocket) -> ContentDir {
     let config_root = rocket.config().root().to_path_buf();
     let content_dir = PathBuf::from(rocket.config().get_str("content_dir").unwrap_or(""));
     let project_root = PathBuf::from(rocket.config().get_str("project_root").unwrap_or(""));
-    println!("content_dir: {:?}", content_dir);
     ContentDir::new(&config_root, &project_root, &content_dir)
 }
 
@@ -60,7 +76,7 @@ fn main() {
             let content_dir = get_content_dir(&rocket);
             Ok(rocket.manage(content_dir))
         }))
-        .mount("/", routes![index, files, error_404])
+        .mount("/", routes![index, elm, elm_params, files, error_404])
         .catch(errors![not_found])
         .launch();
 }
