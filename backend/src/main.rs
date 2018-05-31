@@ -28,6 +28,28 @@ fn get_elm(content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
     )
 }
 
+fn get_yew(content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
+    under_construction(content_dir)
+}
+
+fn under_construction(content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
+    NamedFile::open(
+        Path::new(&content_dir.path)
+            .join("html")
+            .join("under-construction.html"),
+    )
+}
+
+#[get("/yew")]
+fn yew(content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
+    get_yew(content_dir)
+}
+
+#[get("/yew/<_path..>", rank = 2)]
+fn yew_params(_path: PathBuf, content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
+    get_yew(content_dir)
+}
+
 #[get("/elm")]
 fn elm(content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
     get_elm(content_dir)
@@ -40,14 +62,10 @@ fn elm_params(_path: PathBuf, content_dir: rocket::State<ContentDir>) -> io::Res
 
 #[get("/")]
 fn index(content_dir: rocket::State<ContentDir>) -> io::Result<NamedFile> {
-    NamedFile::open(
-        Path::new(&content_dir.path)
-            .join("html")
-            .join("under-construction.html"),
-    )
+    NamedFile::open(Path::new(&content_dir.path).join("html").join("index.html"))
 }
 
-#[get("/<file..>", rank = 2)]
+#[get("/<file..>", rank = 3)]
 fn files(file: PathBuf, content_dir: rocket::State<ContentDir>) -> Option<NamedFile> {
     NamedFile::open(Path::new(&content_dir.path).join(file)).ok()
 }
@@ -76,7 +94,10 @@ fn main() {
             let content_dir = get_content_dir(&rocket);
             Ok(rocket.manage(content_dir))
         }))
-        .mount("/", routes![index, elm, elm_params, files, error_404])
+        .mount(
+            "/",
+            routes![index, elm, elm_params, yew, yew_params, files, error_404],
+        )
         .catch(errors![not_found])
         .launch();
 }
