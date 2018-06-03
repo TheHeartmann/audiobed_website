@@ -40,9 +40,22 @@ view { themes } =
                 , fontFamilies [ "Satisfy" ]
                 ]
             ]
-            [ main_ [ style <| grid [ ( "placeItems", "center" ) ] ] [ h1 [ css <| [ color theme.primary.fontColor ] ] [ text "Audiobed" ] ]
+            [ mainContent theme.primary
             , footer theme.secondary
             ]
+
+
+mainContent : { x | background : Theme.Background, fontColor : Color } -> Html Msg
+mainContent theme =
+    main_ [ style <| grid [ ( "placeItems", "center" ) ] ]
+        [ h1 [ css <| [ color theme.fontColor ] ] [ text "Audiobed" ]
+        , trackContainer [] theme
+        ]
+
+
+trackContainer : List (Html Msg) -> { x | background : Theme.Background, fontColor : Color } -> Html Msg
+trackContainer tracks { background, fontColor } =
+    div [] [ audio [ Html.Styled.Attributes.src "../assets/audio/Checkmate_demo-Battle_Preparations.mp3", Html.Styled.Attributes.controls True, Html.Styled.Attributes.loop True ] [] ]
 
 
 footer : { background : Theme.Background, fontColor : Color } -> Html Msg

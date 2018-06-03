@@ -11,7 +11,7 @@ import Types.Theme as Theme exposing (Theme)
 
 themes : CyclicList Theme
 themes =
-    CyclicList [] Theme.anwar [ Theme.blueSky, Theme.simple ]
+    CyclicList [] Theme.blueSky [ Theme.anwar, Theme.simple ]
 
 
 tracks : Tracks
@@ -28,16 +28,21 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update action model =
     case action of
         KeyDown key ->
-            case Dict.get key Types.keyEvents of
-                Just msg ->
-                    ( handleKeyDownEvent msg model, Cmd.none )
-
-                Nothing ->
-                    ( model, Cmd.none )
+            ( handleKeyDownEvent key model, Cmd.none )
 
 
-handleKeyDownEvent : KeyDownMsg -> Model -> Model
-handleKeyDownEvent msg model =
+handleKeyDownEvent : Char -> { model | themes : CyclicList Theme } -> { model | themes : CyclicList Theme }
+handleKeyDownEvent key model =
+    case Dict.get key Types.keyEvents of
+        Just msg ->
+            performKeyDownAction msg model
+
+        Nothing ->
+            model
+
+
+performKeyDownAction : KeyDownMsg -> { model | themes : CyclicList Theme } -> { model | themes : CyclicList Theme }
+performKeyDownAction msg model =
     case msg of
         CycleThemeForward ->
             { model | themes = CyclicList.forward model.themes }
@@ -47,5 +52,5 @@ handleKeyDownEvent msg model =
 
 
 subscriptions : Model -> Sub Msg
-subscriptions model =
-    Keyboard.downs (\x -> KeyDown <| Char.fromCode x)
+subscriptions _ =
+    Keyboard.downs <| Char.fromCode >> KeyDown
