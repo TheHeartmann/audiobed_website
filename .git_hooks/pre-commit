@@ -75,6 +75,10 @@ def yapf_cmd(files):
     return ('yapf', files, '-i', '--style pep8')
 
 
+def standard_cmd(files):
+    return ('stardard', files, '--fix')
+
+
 def run_formatter(*format_cmds):
     return [format(*x) for x in format_cmds]
 
@@ -130,6 +134,7 @@ def main(changed_files):
     rust_files = get_committed_files('rs')
     python_files = get_committed_files('py') \
         + [x for x in changed_files if x.rsplit(os.path.sep)[-1] in NO_EXT_PYTHON_FILES]
+    js_files = get_committed_files('js')
 
     test_settings = []
     if elm_files:
@@ -140,7 +145,7 @@ def main(changed_files):
     # format
     run_formatter(
         elm_format_cmd(elm_files), rustfmt_cmd(rust_files),
-        yapf_cmd(python_files))
+        yapf_cmd(python_files), standard_cmd(js_files))
 
     # run tests
     test_validation(*test_settings)

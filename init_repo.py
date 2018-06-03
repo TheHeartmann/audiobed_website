@@ -53,7 +53,7 @@ def check_yapf():
     '''
     print('YAPF:')
     if os.popen('yapf -v').readline():
-        log('YAPF installed: ✓', '\t')
+        log('Installed: ✓', '\t')
         return True
 
     log('YAPF formatter was not found. Installing.', '\t')
@@ -64,11 +64,24 @@ def check_yapf():
     return False
 
 
+def check_standard():
+    '''
+    Check whether standard is installed or not.
+    '''
+    print('Standard:')
+    if os.popen('standard --version').readline():
+        log('Installed: ✓', '\t')
+        return True
+    log('Standard not found. Please install it using `npm i -g standard`')
+    return False
+
+
 def main():
     log("Initializing repo.")
     init_gitconfig()
     copy_hooks()
     check_yapf()
+    check_standard()
     log("Initial repo configuration complete.")
 
 
