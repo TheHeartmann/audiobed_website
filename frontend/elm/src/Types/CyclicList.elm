@@ -61,22 +61,6 @@ backward list =
     list |> reverse |> forward |> reverse
 
 
-
--- let
---     current =
---         previousElement list
---     ( previous, next ) =
---         if List.isEmpty list.previous && List.isEmpty list.next then
---             ( [], [] )
---         else if List.isEmpty list.previous then
---             -- we're at the beginning of the list; cycle around
---             ( List.reverse list.next |> List.tail |> Maybe.withDefault [] |> List.reverse, [] )
---         else
---             ( list.previous |> List.reverse |> List.tail |> Maybe.withDefault [] |> List.reverse, [ list.current ] ++ list.next )
--- in
---     CyclicList previous current next
-
-
 foldr : (a -> b -> b) -> b -> CyclicList a -> b
 foldr func initial cyclicList =
     cyclicList

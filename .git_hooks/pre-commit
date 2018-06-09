@@ -76,7 +76,7 @@ def yapf_cmd(files):
 
 
 def standard_cmd(files):
-    return ('stardard', files, '--fix')
+    return ('standard', files, '--fix')
 
 
 def run_formatter(*format_cmds):
