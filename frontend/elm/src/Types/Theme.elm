@@ -1,4 +1,4 @@
-module Types.Theme exposing (Theme, Background, ColorCombination, elm, blueSky, anwar, getBackground, simple)
+module Types.Theme exposing (Background, ColorCombination, Theme, anwar, blueSky, elm, getBackground, simple)
 
 import Css exposing (hex)
 import Css.Colors exposing (..)
@@ -44,9 +44,9 @@ elm =
         elmYellow =
             hex "EEAC28"
     in
-        { primary = { background = Color elmBlue, fontColor = white }
-        , secondary = { background = Color elmYellow, fontColor = black }
-        }
+    { primary = { background = Color elmBlue, fontColor = white }
+    , secondary = { background = Color elmYellow, fontColor = black }
+    }
 
 
 simple : Theme
@@ -65,6 +65,6 @@ anwar =
 
 blueSky : Theme
 blueSky =
-    { primary = { background = Image <| Css.linearGradient2 Css.toTop (Css.stop <| hex "FFFFFF") (Css.stop <| hex "6DD5FA") [ (Css.stop <| hex "2980B9") ], fontColor = white }
+    { primary = { background = Image <| Css.linearGradient2 Css.toTop (Css.stop <| hex "FFFFFF") (Css.stop <| hex "6DD5FA") [ Css.stop <| hex "2980B9" ], fontColor = white }
     , secondary = { background = Color <| hex "fff0", fontColor = black }
     }

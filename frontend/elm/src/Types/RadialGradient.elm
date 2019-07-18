@@ -57,7 +57,7 @@ positionToString pos =
                 Percentage x y ->
                     toString x ++ "% " ++ toString y ++ "%"
     in
-        "at " ++ val
+    "at " ++ val
 
 
 type alias RadialGradient =
@@ -101,4 +101,4 @@ toStyle { colorStops, position, shape, extent } =
         string =
             "radial-gradient(" ++ vals ++ ")"
     in
-        ( "background", s )
+    ( "background", s )

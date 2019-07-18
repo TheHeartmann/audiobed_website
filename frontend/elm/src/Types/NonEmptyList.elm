@@ -1,4 +1,4 @@
-module Types.NonEmptyList exposing (NonEmptyList, new, append, join)
+module Types.NonEmptyList exposing (NonEmptyList, append, join, new)
 
 
 type alias NonEmptyList a =
@@ -32,7 +32,7 @@ concat x y =
                 Nothing ->
                     x.tail
     in
-        { x | tail = tailElement, contents = x.contents ++ y }
+    { x | tail = tailElement, contents = x.contents ++ y }
 
 
 join : String -> NonEmptyList String -> String

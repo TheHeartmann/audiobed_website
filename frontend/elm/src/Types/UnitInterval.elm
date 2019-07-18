@@ -11,7 +11,4 @@ fromFloat x =
 
 
 val : UnitInterval -> Float
-val unitInterval =
-    case unitInterval of
-        UnitInterval x ->
-            x
+val (UnitInterval x) = x

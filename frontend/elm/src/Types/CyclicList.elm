@@ -1,4 +1,4 @@
-module Types.CyclicList exposing (CyclicList, forward, backward, toList, reverse, map, foldl, foldr)
+module Types.CyclicList exposing (CyclicList, backward, foldl, foldr, forward, map, reverse, toList)
 
 
 type alias CyclicList a =
@@ -47,13 +47,15 @@ forward list =
         ( previous, next ) =
             if List.isEmpty list.previous && List.isEmpty list.next then
                 ( [], [] )
+
             else if List.isEmpty list.next then
                 -- we're at the end of the list; cycle around
                 ( [], (List.tail list.previous |> Maybe.withDefault []) ++ [ list.current ] )
+
             else
-                ( list.previous ++ [ list.current ], (List.tail list.next |> Maybe.withDefault []) )
+                ( list.previous ++ [ list.current ], List.tail list.next |> Maybe.withDefault [] )
     in
-        CyclicList previous current next
+    CyclicList previous current next
 
 
 backward : CyclicList a -> CyclicList a

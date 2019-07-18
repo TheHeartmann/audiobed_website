@@ -1,4 +1,4 @@
-module Types exposing (..)
+module Types exposing (AudioTrack, Id, KeyDownMsg(..), Model, Msg(..), PlaybackState(..), Tracks, keyEvents)
 
 import Dict exposing (Dict)
 import Keyboard
@@ -6,6 +6,7 @@ import RemoteData exposing (WebData)
 import Types.CyclicList exposing (CyclicList)
 import Types.Theme exposing (Theme)
 import Types.UnitInterval exposing (UnitInterval)
+
 
 
 -- MODEL

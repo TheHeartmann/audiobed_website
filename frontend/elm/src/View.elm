@@ -1,9 +1,9 @@
 module View exposing (view)
 
 import Css exposing (..)
-import FontAwesome exposing (icon, gitHub)
+import FontAwesome exposing (gitHub, icon)
 import Html.Styled exposing (..)
-import Html.Styled.Attributes exposing (css, class, href, title, style)
+import Html.Styled.Attributes exposing (class, css, href, style, title)
 import Html.Styled.Events exposing (onClick)
 import Svg
 import Svg.Attributes
@@ -32,17 +32,17 @@ view { themes } =
         backgroundTheme =
             Theme.getBackground theme.primary.background
     in
-        div
-            [ style <| mainGrid
-            , css <|
-                [ height <| vh 100
-                , backgroundTheme
-                , fontFamilies [ "Satisfy" ]
-                ]
+    div
+        [ style <| mainGrid
+        , css <|
+            [ height <| vh 100
+            , backgroundTheme
+            , fontFamilies [ "Satisfy" ]
             ]
-            [ mainContent theme.primary
-            , footer theme.secondary
-            ]
+        ]
+        [ mainContent theme.primary
+        , footer theme.secondary
+        ]
 
 
 mainContent : { x | background : Theme.Background, fontColor : Color } -> Html Msg

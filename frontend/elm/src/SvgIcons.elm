@@ -1,4 +1,4 @@
-module SvgIcons exposing (..)
+module SvgIcons exposing (elmSvg, polygon, rect, rustSvg)
 
 import Html.Styled exposing (Html, fromUnstyled)
 import Svg exposing (..)

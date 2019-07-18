@@ -12,7 +12,7 @@ unitIntervalSuite =
         [ describe "Testing output is always between 0 and 1"
             [ fuzz percentage "value is always equal" <|
                 \x ->
-                    Expect.equal x (UnitInterval.fromFloat x |> UnitInterval.val)
+                    Expect.within (Expect.Absolute 0.00001) x (UnitInterval.fromFloat x |> UnitInterval.val)
             , fuzz float "Output is always clamped" <|
                 \x ->
                     Expect.all [ Expect.atLeast 0, Expect.atMost 1 ] (UnitInterval.fromFloat x |> UnitInterval.val)

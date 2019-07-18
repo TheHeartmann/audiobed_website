@@ -1,10 +1,10 @@
-module State exposing (init, update, subscriptions)
+module State exposing (init, subscriptions, update)
 
 import Char
 import Dict exposing (Dict)
 import Keyboard
 import RemoteData
-import Types exposing (Model, Msg(..), Tracks, KeyDownMsg(..))
+import Types exposing (KeyDownMsg(..), Model, Msg(..), Tracks)
 import Types.CyclicList as CyclicList exposing (CyclicList)
 import Types.Theme as Theme exposing (Theme)
 
